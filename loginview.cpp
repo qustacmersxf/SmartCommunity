@@ -5,6 +5,7 @@
 #include <QFont>
 #include <QDebug>
 #include <QSqlQuery>
+#include <QMessageBox>
 
 LoginView::LoginView(QWidget *parent) :
     QWidget(parent),
@@ -25,6 +26,7 @@ LoginView::LoginView(QWidget *parent) :
     vBoxLayout.addStretch();
 
     label_count.setText(QString("账号："));
+    lineEdit_count.setPlaceholderText(QString("请用手机号登录"));
     hBoxLayout_count.addStretch();
     hBoxLayout_count.addWidget(&label_count);
     hBoxLayout_count.addWidget(&lineEdit_count);
@@ -32,6 +34,7 @@ LoginView::LoginView(QWidget *parent) :
     vBoxLayout.addLayout(&hBoxLayout_count);
 
     label_password.setText(QString("密码："));
+    lineEdit_password.setEchoMode(QLineEdit::Password);
     hBoxLayout_password.addStretch();
     hBoxLayout_password.addWidget(&label_password);
     hBoxLayout_password.addWidget(&lineEdit_password);
@@ -44,7 +47,7 @@ LoginView::LoginView(QWidget *parent) :
     for (int i=0; i<3; i++){
         radioButton[i].setText(str[i]);
         hBoxLayout_radio.addWidget(&radioButton[i]);
-        buttonGroup.addButton(&radioButton[i]);
+        buttonGroup.addButton(&radioButton[i], i);
     }
     hBoxLayout_radio.addStretch();
     vBoxLayout.addLayout(&hBoxLayout_radio);
@@ -75,6 +78,39 @@ void LoginView::slot_login(bool value)
     DBHelper dbHelper;
     if (dbHelper.open()){
         qDebug() << "数据库打开成功！";
+        QString account = this->lineEdit_count.text(); //获取输入的账号，这里用手机号作为登录账号
+        QString password = this->lineEdit_password.text();
+        DBHelper::Role role = (DBHelper::Role)buttonGroup.checkedId();
+        if(role < 0){
+            QMessageBox::information(this, QString("错误"), QString("请选择登录身份"), QMessageBox::Ok);
+            return;
+        }
+        QSqlQuery query = dbHelper.getQuery();
+        QString sql = "";
+        switch (role) {
+        case DBHelper::Role::administrator:
+            sql = "select password from user_administrator where phone = '" + account + "'";
+            break;
+        case DBHelper::Role::employee:
+            sql = "select password from user_employee where phone = '" + account + "'";
+            break;
+        case DBHelper::Role::owner:
+            sql = "select password from user_owner where phone = '" + account + "'";
+            break;
+        default:
+            break;
+        }
+        query.exec(sql);
+        if (query.next()){
+            QString password_db = query.value(0).toString();
+            if (password.compare(password_db) == 0){
+                qDebug() << "登录成功";
+            }else{
+                QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
+            }
+        }else{
+            QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
+        }
         dbHelper.close();
     }else{
         qDebug() << "数据库打开失败！";

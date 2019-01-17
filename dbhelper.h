@@ -12,6 +12,10 @@ public:
     bool open();
     void close();
     QSqlQuery getQuery();
+public:
+    enum Role{
+        administrator, employee, owner
+    };
 private:
     QSqlDatabase db;
     QSqlQuery query;
