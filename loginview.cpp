@@ -12,6 +12,7 @@ LoginView::LoginView(QWidget *parent) :
     ui(new Ui::LoginView)
 {
     ui->setupUi(this);
+    setWindowTitle(QString("登录"));
 
     vBoxLayout.addStretch();
 
@@ -54,18 +55,19 @@ LoginView::LoginView(QWidget *parent) :
     vBoxLayout.addStretch();
 
     pushButton_login.setText(QString("登录"));
-    connect(&pushButton_login, SIGNAL(clicked(bool)), this, SLOT(slot_login(bool)));
+    connect(&pushButton_login, SIGNAL(clicked(bool)), this, SLOT(slot_login()));
     hBoxLayout_button.addStretch();
     hBoxLayout_button.addWidget(&pushButton_login);
     pushButton_quit.setText(QString("退出"));
-    connect(&pushButton_quit, SIGNAL(clicked(bool)), this, SLOT(slot_quit(bool)));
+    connect(&pushButton_quit, SIGNAL(clicked(bool)), this, SLOT(slot_quit()));
     hBoxLayout_button.addStretch();
     hBoxLayout_button.addWidget(&pushButton_quit);
     hBoxLayout_button.addStretch();
     vBoxLayout.addLayout(&hBoxLayout_button);
     vBoxLayout.addStretch();
 
-    setLayout(&vBoxLayout);
+    setLayout(&vBoxLayout);\
+    setFixedSize(this->width(), this->height());
 }
 
 LoginView::~LoginView()
@@ -73,7 +75,7 @@ LoginView::~LoginView()
     delete ui;
 }
 
-void LoginView::slot_login(bool value)
+void LoginView::slot_login()
 {
     DBHelper dbHelper;
     if (dbHelper.open()){
@@ -101,10 +103,11 @@ void LoginView::slot_login(bool value)
             break;
         }
         query.exec(sql);
+        qDebug() << sql;
         if (query.next()){
             QString password_db = query.value(0).toString();
             if (password.compare(password_db) == 0){
-                qDebug() << "登录成功";
+                qDebug() << "登录成功";/**替换为界面切换操作*/
             }else{
                 QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
             }
@@ -117,7 +120,7 @@ void LoginView::slot_login(bool value)
     }
 }
 
-void LoginView::slot_quit(bool value)
+void LoginView::slot_quit()
 {
     close();
 }

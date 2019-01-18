@@ -8,14 +8,15 @@
 class DBHelper
 {
 public:
+    enum Role{
+        administrator, employee, owner
+    };
+public:
     DBHelper();
     bool open();
     void close();
     QSqlQuery getQuery();
-public:
-    enum Role{
-        administrator, employee, owner
-    };
+    bool addUser(QString name, Role role, QString phone, QString password, QString homeAddress);
 private:
     QSqlDatabase db;
     QSqlQuery query;

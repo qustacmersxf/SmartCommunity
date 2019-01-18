@@ -27,11 +27,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     loginview.cpp \
-    dbhelper.cpp
+    dbhelper.cpp \
+    administratorview.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
-    dbhelper.h
+    dbhelper.h \
+    administratorview.h
 
 FORMS    += mainwindow.ui \
-    loginview.ui
+    loginview.ui \
+    administratorview.ui

@@ -29,3 +29,13 @@ QSqlQuery DBHelper::getQuery()
 {
     return query;
 }
+
+bool DBHelper::addUser(QString name, Role role, QString phone, QString password, QString homeAddress)
+{
+    QString sql = "insert into user(name, role, phone, password, homeAddress) values('" + name + "', ";
+    sql += QString::number((int)role) + ", ";
+    sql += "'" + phone +"', ";
+    sql += "'" + password + "', ";
+    sql += "'" + homeAddress + "'";
+    return query.exec(sql);
+}

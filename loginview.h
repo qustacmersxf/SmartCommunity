@@ -42,8 +42,8 @@ signals:
     void signal_quit(int);
 
 private slots:
-    void slot_login(bool value);
-    void slot_quit(bool value);
+    void slot_login();
+    void slot_quit();
 };
 
 #endif // LOGINVIEW_H
