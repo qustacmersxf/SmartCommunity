@@ -28,13 +28,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     loginview.cpp \
     dbhelper.cpp \
-    administratorview.cpp
+    administratorview.cpp \
+    employeeregisterwidget.cpp \
+    employeelookingwidget.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
     dbhelper.h \
-    administratorview.h
+    administratorview.h \
+    employeeregisterwidget.h \
+    employeelookingwidget.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \
-    administratorview.ui
+    administratorview.ui \
+    employeeregisterwidget.ui \
+    employeelookingwidget.ui

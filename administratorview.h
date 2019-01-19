@@ -7,7 +7,8 @@
 #include <QAction>
 #include <QTabWidget>
 #include <QLabel>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include "employeeregisterwidget.h"
 
 namespace Ui {
 class AdministratorView;
@@ -30,8 +31,9 @@ private:
     QAction *action_personelAdd, *action_personelView, *action_personelModify;
     QTabWidget *tabWidget;
     QLabel label_welcome;
-    QVBoxLayout hBoxLayout;
+    QHBoxLayout hBoxLayout;
     QWidget *widget_tabWiget;
+    EmployeeRegisterWidget employeeRegisterWidget;
 
 public slots:
     void slot_personelAdd();

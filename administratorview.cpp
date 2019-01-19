@@ -15,6 +15,8 @@ AdministratorView::AdministratorView(QWidget *parent) :
 
     init_addPersonelMagementMenu();
     init_tabWidget();
+
+    setFixedSize(this->width(), this->height());
 }
 
 AdministratorView::~AdministratorView()
@@ -72,21 +74,25 @@ void AdministratorView::init_tabWidget()
     font.setPointSize(30);
     font.setFamily("华文彩云");
     label_welcome.setFont(font);
+    label_welcome.setAlignment(Qt::AlignCenter);
     tabWidget = new QTabWidget();
     tabWidget->addTab(&label_welcome, QString("欢迎"));
+
+    tabWidget->addTab(&employeeRegisterWidget, QString("人员添加"));
+
+    //tabWidget->tabBar()->hide();
+
     hBoxLayout.addWidget(tabWidget);
-
-
-
     widget_tabWiget = new QWidget(this);
     widget_tabWiget->setLayout(&hBoxLayout);
-    //widget_tabWiget->setGeometry(0,0,this->width(),this->height());
     widget_tabWiget->resize(this->width(), this->height());
+    widget_tabWiget->setGeometry(0, 20, this->width(), this->height()-20);
 }
 
 void AdministratorView::slot_personelAdd()
 {
     qDebug() << "slot_personelAdd()";
+    tabWidget->setCurrentIndex(1);
 }
 
 void AdministratorView::slot_personelView()
