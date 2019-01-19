@@ -9,7 +9,6 @@ bool DBHelper::open()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
-    //db.setPort(3306);
     db.setDatabaseName("SmartCommunity");
     db.setUserName("root");
     db.setPassword("");

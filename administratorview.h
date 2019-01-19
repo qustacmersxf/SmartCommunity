@@ -2,8 +2,12 @@
 #define ADMINISTRATORVIEW_H
 
 #include <QMainWindow>
+#include <QWidget>
 #include <QMenu>
 #include <QAction>
+#include <QTabWidget>
+#include <QLabel>
+#include <QVBoxLayout>
 
 namespace Ui {
 class AdministratorView;
@@ -18,11 +22,16 @@ public:
     ~AdministratorView();
 
     void init_addPersonelMagementMenu();
+    void init_tabWidget();
 
 private:
     Ui::AdministratorView *ui;
     QMenu *menu_personelManagement;
     QAction *action_personelAdd, *action_personelView, *action_personelModify;
+    QTabWidget *tabWidget;
+    QLabel label_welcome;
+    QVBoxLayout hBoxLayout;
+    QWidget *widget_tabWiget;
 
 public slots:
     void slot_personelAdd();

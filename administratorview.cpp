@@ -2,6 +2,9 @@
 #include "ui_administratorview.h"
 #include <QMenuBar>
 #include <QDebug>
+#include <QFont>
+#include <QMainWindow>
+#include <QDialog>
 
 AdministratorView::AdministratorView(QWidget *parent) :
     QMainWindow(parent),
@@ -9,16 +12,9 @@ AdministratorView::AdministratorView(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(QString("智慧小区-管理员：宋象飞"));//改为动态设置（可通过构造函数的参数来传递管理员姓名）
-    qDebug() << "0";
-    init_addPersonelMagementMenu();
 
-    /*qDebug() << "1";
-    tabWidget.addTab(new WelcomWidget, QString("欢迎"));
-    qDebug() << "2";
-    hBoxLayout.addWidget(&tabWidget);
-    qDebug() << "3";
-    setLayout(&hBoxLayout);
-    qDebug() << "4";*/
+    init_addPersonelMagementMenu();
+    init_tabWidget();
 }
 
 AdministratorView::~AdministratorView()
@@ -67,6 +63,25 @@ void AdministratorView::init_addPersonelMagementMenu()
     //action_personelAdd->setIcon(QIcon(QString(""))); //添加图标
     connect(action_personelModify, &QAction::triggered, this, &AdministratorView::slot_personelModify);
     menu_personelManagement->addAction(action_personelModify);
+}
+
+void AdministratorView::init_tabWidget()
+{
+    label_welcome.setText(QString("欢迎进入智慧小区系统"));
+    QFont font;
+    font.setPointSize(30);
+    font.setFamily("华文彩云");
+    label_welcome.setFont(font);
+    tabWidget = new QTabWidget();
+    tabWidget->addTab(&label_welcome, QString("欢迎"));
+    hBoxLayout.addWidget(tabWidget);
+
+
+
+    widget_tabWiget = new QWidget(this);
+    widget_tabWiget->setLayout(&hBoxLayout);
+    //widget_tabWiget->setGeometry(0,0,this->width(),this->height());
+    widget_tabWiget->resize(this->width(), this->height());
 }
 
 void AdministratorView::slot_personelAdd()
