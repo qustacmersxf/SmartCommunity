@@ -30,17 +30,20 @@ SOURCES += main.cpp\
     dbhelper.cpp \
     administratorview.cpp \
     employeeregisterwidget.cpp \
-    employeelookingwidget.cpp
+    employeelookingwidget.cpp \
+    employeemodifywidget.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
     dbhelper.h \
     administratorview.h \
     employeeregisterwidget.h \
-    employeelookingwidget.h
+    employeelookingwidget.h \
+    employeemodifywidget.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \
     administratorview.ui \
     employeeregisterwidget.ui \
-    employeelookingwidget.ui
+    employeelookingwidget.ui \
+    employeemodifywidget.ui

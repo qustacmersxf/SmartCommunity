@@ -8,7 +8,9 @@
 #include <QTabWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include "dbhelper.h"
 #include "employeeregisterwidget.h"
+#include "employeelookingwidget.h"
 
 namespace Ui {
 class AdministratorView;
@@ -24,6 +26,7 @@ public:
 
     void init_addPersonelMagementMenu();
     void init_tabWidget();
+    void setUser(QString userName, int userId);
 
 private:
     Ui::AdministratorView *ui;
@@ -34,6 +37,10 @@ private:
     QHBoxLayout hBoxLayout;
     QWidget *widget_tabWiget;
     EmployeeRegisterWidget employeeRegisterWidget;
+    EmployeeLookingWidget employeeLookingWidget;
+
+    QString userName;
+    int userId;
 
 public slots:
     void slot_personelAdd();

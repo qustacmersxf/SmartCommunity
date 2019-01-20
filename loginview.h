@@ -10,6 +10,8 @@
 #include <QRadioButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <dbhelper.h>
+#include <administratorview.h>
 
 namespace Ui {
 class LoginView;
@@ -37,12 +39,13 @@ private:
     QHBoxLayout hBoxLayout_system, hBoxLayout_count, hBoxLayout_password, hBoxLayout_radio, hBoxLayout_button;
     QVBoxLayout vBoxLayout;
 
+    AdministratorView administratorView;
+
 signals:
-    void signal_login(int);
-    void signal_quit(int);
+
 
 private slots:
-    void slot_login();
+    void slot_login();  //pushButton_login的相应槽函数，进行数据库查询与账号密码对比，并发射登录信号signal_loginToView()
     void slot_quit();
 };
 

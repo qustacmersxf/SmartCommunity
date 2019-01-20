@@ -11,7 +11,6 @@ AdministratorView::AdministratorView(QWidget *parent) :
     ui(new Ui::AdministratorView)
 {
     ui->setupUi(this);
-    setWindowTitle(QString("智慧小区-管理员：宋象飞"));//改为动态设置（可通过构造函数的参数来传递管理员姓名）
 
     init_addPersonelMagementMenu();
     init_tabWidget();
@@ -79,6 +78,7 @@ void AdministratorView::init_tabWidget()
     tabWidget->addTab(&label_welcome, QString("欢迎"));
 
     tabWidget->addTab(&employeeRegisterWidget, QString("人员添加"));
+    tabWidget->addTab(&employeeLookingWidget, QString("人员查看/修改"));
 
     //tabWidget->tabBar()->hide();
 
@@ -87,6 +87,12 @@ void AdministratorView::init_tabWidget()
     widget_tabWiget->setLayout(&hBoxLayout);
     widget_tabWiget->resize(this->width(), this->height());
     widget_tabWiget->setGeometry(0, 20, this->width(), this->height()-20);
+}
+
+void AdministratorView::setUser(QString userName, int userId)
+{
+    this->userName = userName;
+    this->userId = userId;
 }
 
 void AdministratorView::slot_personelAdd()
@@ -98,9 +104,11 @@ void AdministratorView::slot_personelAdd()
 void AdministratorView::slot_personelView()
 {
     qDebug() << "slot_personelView()";
+    tabWidget->setCurrentIndex(2);
 }
 
 void AdministratorView::slot_personelModify()
 {
     qDebug() << "slot_personelModify()";
+    tabWidget->setCurrentIndex(2);
 }

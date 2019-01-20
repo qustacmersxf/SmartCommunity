@@ -91,13 +91,13 @@ void LoginView::slot_login()
         QString sql = "";
         switch (role) {
         case DBHelper::Role::administrator:
-            sql = "select password from user_administrator where phone = '" + account + "'";
+            sql = "select password, name, id from user_administrator where phone = '" + account + "'";
             break;
         case DBHelper::Role::employee:
-            sql = "select password from user_employee where phone = '" + account + "'";
+            sql = "select password, name, id from user_employee where phone = '" + account + "'";
             break;
         case DBHelper::Role::owner:
-            sql = "select password from user_owner where phone = '" + account + "'";
+            sql = "select password, name, id from user_owner where phone = '" + account + "'";
             break;
         default:
             break;
@@ -106,8 +106,13 @@ void LoginView::slot_login()
         qDebug() << sql;
         if (query.next()){
             QString password_db = query.value(0).toString();
+            QString name_db = query.value(1).toString();
+            int id = query.value(2).toInt();
             if (password.compare(password_db) == 0){
                 qDebug() << "登录成功";/**替换为界面切换操作*/
+                administratorView.setUser(name_db, id);
+                administratorView.show();
+                this->hide();
             }else{
                 QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
             }
