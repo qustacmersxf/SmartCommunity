@@ -107,11 +107,25 @@ void LoginView::slot_login()
         if (query.next()){
             QString password_db = query.value(0).toString();
             QString name_db = query.value(1).toString();
+            qDebug() << name_db;
             int id = query.value(2).toInt();
             if (password.compare(password_db) == 0){
                 qDebug() << "登录成功";/**替换为界面切换操作*/
-                administratorView.setUser(name_db, id);
-                administratorView.show();
+                switch (role) {
+                case DBHelper::Role::administrator:
+                    administratorView.setUser(name_db, id);
+                    administratorView.setWindowTitle("管理员界面-" + name_db);
+                    administratorView.show();
+                    break;
+                case DBHelper::Role::employee:
+                    qDebug() << "工作人员登录";
+                    break;
+                case DBHelper::Role::owner:
+                    qDebug() << "业主登录人员登录";
+                    break;
+                default:
+                    break;
+                }
                 this->hide();
             }else{
                 QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);

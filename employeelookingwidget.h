@@ -13,6 +13,8 @@
 #include <QRadioButton>
 #include <QButtonGroup>
 
+#include "employeemodifywidget.h"
+
 namespace Ui {
 class EmployeeLookingWidget;
 }
@@ -37,8 +39,13 @@ private:
     QSqlQueryModel queryModel;
     QTableView tableView;
 
+    EmployeeModifyWidget employeeModifyWidget;
+
 public slots:
     void slot_query();
+    void slot_tableViewDoubleClicked(const QModelIndex index);
+    void slot_tableViewClicked(const QModelIndex index);
+    void slot_submitSuccess();
 };
 
 #endif // EMPLOYEELOOKINGWIDGET_H

@@ -45,5 +45,4 @@ FORMS    += mainwindow.ui \
     loginview.ui \
     administratorview.ui \
     employeeregisterwidget.ui \
-    employeelookingwidget.ui \
-    employeemodifywidget.ui
+    employeelookingwidget.ui

@@ -80,7 +80,7 @@ void AdministratorView::init_tabWidget()
     tabWidget->addTab(&employeeRegisterWidget, QString("人员添加"));
     tabWidget->addTab(&employeeLookingWidget, QString("人员查看/修改"));
 
-    //tabWidget->tabBar()->hide();
+    tabWidget->tabBar()->hide();
 
     hBoxLayout.addWidget(tabWidget);
     widget_tabWiget = new QWidget(this);
