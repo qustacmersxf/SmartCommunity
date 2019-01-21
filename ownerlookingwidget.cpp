@@ -1,5 +1,5 @@
-#include "employeelookingwidget.h"
-#include "ui_employeelookingwidget.h"
+#include "ownerlookingwidget.h"
+#include "ui_ownerlookingwidget.h"
 #include <QFont>
 #include <QDebug>
 #include <QSqlRecord>
@@ -7,16 +7,16 @@
 #include <vector>
 #include <dbhelper.h>
 
-EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
+OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::EmployeeLookingWidget)
+    ui(new Ui::OwnerLookingWidget)
 {
     ui->setupUi(this);
 
     QFont font;
     font.setPointSize(10);
 
-    connect(&employeeModifyWidget, SIGNAL(signal_submitSuccess()), this, SLOT(slot_submitSuccess()));
+    connect(&ownerModifyWidget, SIGNAL(signal_submitSuccess()), this, SLOT(slot_submitSuccess()));
 
     label_condition.setText(QString("筛选条件"));
     label_condition.setFont(font);
@@ -28,34 +28,19 @@ EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
     leftHBoxLayout[1].addWidget(&label_name);
     leftHBoxLayout[1].addWidget(&lineEdit_name);
 
-    label_role.setText(QString("身份"));
-    label_role.setFont(font);
-    lineEdit_role.setFont(font);
-    leftHBoxLayout[2].addWidget(&label_role);
-    QString str[2] = {"工作人员", "业主"};
-    for (int i=0; i<2; i++){
-        radioButton[i].setText(str[i]);
-        radioButton[i].setFont(font);
-        leftHBoxLayout[2].addWidget(&radioButton[i]);
-        if (i < 1){
-            leftHBoxLayout[2].addStretch();
-        }
-        buttonGroup.addButton(&radioButton[i], i);
-    }
-
     label_phone.setText(QString("电话"));
     label_phone.setFont(font);
     lineEdit_phone.setFont(font);
-    leftHBoxLayout[3].addWidget(&label_phone);
-    leftHBoxLayout[3].addWidget(&lineEdit_phone);
+    leftHBoxLayout[2].addWidget(&label_phone);
+    leftHBoxLayout[2].addWidget(&lineEdit_phone);
 
     pushButton_query.setText(QString("查询"));
     pushButton_query.setFont(font);
     connect(&pushButton_query, SIGNAL(clicked(bool)), this, SLOT(slot_query()));
-    leftHBoxLayout[4].addWidget(&pushButton_query);
-    leftHBoxLayout[4].setAlignment(Qt::AlignRight);
+    leftHBoxLayout[3].addWidget(&pushButton_query);
+    leftHBoxLayout[3].setAlignment(Qt::AlignRight);
 
-    for (int i=0; i<5; i++){
+    for (int i=0; i<4; i++){
         leftVBoxLayout.addLayout(&leftHBoxLayout[i]);
     }
     leftVBoxLayout.addStretch();
@@ -84,28 +69,14 @@ EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
     setLayout(&wholeHBoxLayout);
 }
 
-EmployeeLookingWidget::~EmployeeLookingWidget()
+OwnerLookingWidget::~OwnerLookingWidget()
 {
     delete ui;
 }
-
-void EmployeeLookingWidget::slot_query()
+void OwnerLookingWidget::slot_query()
 {
-    QString sql = "";
+    QString sql = "select * from user where role = 2";
     std::vector<QString> conditions;
-    DBHelper::Role role = (DBHelper::Role)(buttonGroup.checkedId() - 1);
-    qDebug() << (int)role;
-    switch (role) {
-    case DBHelper::Role::employee:
-        sql = "select * from user_employee where role <> 0";
-        break;
-    case DBHelper::Role::owner:
-        sql = "select * from user_owner where role <> 0";
-        break;
-    default:
-        sql = "select * from user where role <> 0";
-        break;
-    }
     QString name = lineEdit_name.text();
     if (!name.isEmpty()){
         conditions.push_back( "name = '" + name + "'");
@@ -116,26 +87,17 @@ void EmployeeLookingWidget::slot_query()
     }
     if (conditions.size() > 0){
         for (int i=1; i<conditions.size(); i++)
-            sql += "and " + conditions[i];
+            sql += " and " + conditions[i];
     }
     qDebug() << sql;
     queryModel.setQuery(sql);
     tableView.resizeColumnsToContents();
-    QRadioButton *button = (QRadioButton*)buttonGroup.checkedButton();
-    if (0 != button){
-        qDebug() << "button != 0";
-        buttonGroup.removeButton(button);
-        button->setChecked(false);
-        buttonGroup.addButton(button, (int)role);
-    }else{
-        qDebug() << "button == 0";
-    }
     lineEdit_name.clear();
     lineEdit_phone.clear();
     qDebug() << "查询成功";
 }
 
-void EmployeeLookingWidget::slot_tableViewDoubleClicked(const QModelIndex index)
+void OwnerLookingWidget::slot_tableViewDoubleClicked(const QModelIndex index)
 {
     if (index.isValid()){
         QSqlRecord recond = queryModel.record(index.row());
@@ -146,22 +108,22 @@ void EmployeeLookingWidget::slot_tableViewDoubleClicked(const QModelIndex index)
         QString homeAddress = recond.value(5).toString();
         qDebug() << name + phone + password + homeAddress;
 
-        employeeModifyWidget.setInfo(id, name, phone, password, homeAddress);
-        employeeModifyWidget.show();
+        ownerModifyWidget.setInfo(id, name, phone, password, homeAddress);
+        ownerModifyWidget.show();
     }
 }
 
-void EmployeeLookingWidget::slot_tableViewClicked(const QModelIndex index)
+void OwnerLookingWidget::slot_tableViewClicked(const QModelIndex index)
 {
     tableView.selectRow(index.row());
 }
 
-void EmployeeLookingWidget::slot_submitSuccess()
+void OwnerLookingWidget::slot_submitSuccess()
 {
     queryModel.setQuery("select * from user");
 }
 
-void EmployeeLookingWidget::slot_delete()
+void OwnerLookingWidget::slot_delete()
 {
     QSqlRecord recond = queryModel.record(tableView.currentIndex().row());
     int id = recond.value(0).toInt();

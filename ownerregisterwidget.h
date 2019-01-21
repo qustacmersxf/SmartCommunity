@@ -1,5 +1,5 @@
-#ifndef EMPLOYEEREGISTERWIDGET_H
-#define EMPLOYEEREGISTERWIDGET_H
+#ifndef OWNERREGISTERVIEW_H
+#define OWNERREGISTERVIEW_H
 
 #include <QWidget>
 #include <QLabel>
@@ -10,31 +10,27 @@
 #include "dbhelper.h"
 
 namespace Ui {
-class EmployeeRegisterWidget;
+class OwnerRegisterView;
 }
 
-class EmployeeRegisterWidget : public QWidget
+class OwnerRegisterWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit EmployeeRegisterWidget(QWidget *parent = 0);
-    ~EmployeeRegisterWidget();
-
-    void setRole(DBHelper::Role role);
+    explicit OwnerRegisterWidget(QWidget *parent = 0);
+    ~OwnerRegisterWidget();
 
 private:
-    Ui::EmployeeRegisterWidget *ui;
+    Ui::OwnerRegisterView *ui;
     QLabel label_name, label_phone, label_password, label_confirm, label_homeAddress;
     QLineEdit lineEdit_name, lineEdit_phone, lineEdit_password, lineEdit_confirm, lineEdit_homeAddress;
-    QPushButton pushButton_submit_employee;
+    QPushButton pushButton_submit_owner;
     QHBoxLayout hBoxLayout[6];
     QVBoxLayout vBoxLayout;
 
-    DBHelper::Role role;
-
 public slots:
-    void slot_submit_employee();
+    void slot_submit_owner();
 };
 
-#endif // EMPLOYEEREGISTERWIDGET_H
+#endif // OWNERREGISTERVIEW_H

@@ -1,5 +1,5 @@
-#ifndef EMPLOYEELOOKINGWIDGET_H
-#define EMPLOYEELOOKINGWIDGET_H
+#ifndef OWNERLOOKINGWIDGET_H
+#define OWNERLOOKINGWIDGET_H
 
 #include <QWidget>
 #include <QLabel>
@@ -13,33 +13,31 @@
 #include <QRadioButton>
 #include <QButtonGroup>
 
-#include "employeemodifywidget.h"
+#include "ownermodifywidget.h"
 
 namespace Ui {
-class EmployeeLookingWidget;
+class OwnerLookingWidget;
 }
 
-class EmployeeLookingWidget : public QWidget
+class OwnerLookingWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit EmployeeLookingWidget(QWidget *parent = 0);
-    ~EmployeeLookingWidget();
+    explicit OwnerLookingWidget(QWidget *parent = 0);
+    ~OwnerLookingWidget();
 
 private:
-    Ui::EmployeeLookingWidget *ui;
+    Ui::OwnerLookingWidget *ui;
     QLabel label_condition, label_result ,label_name, label_role, label_phone, label_homeAddress;
     QLineEdit lineEdit_name, lineEdit_role, lineEdit_phone, lineEdit_homeAddress;
-    QRadioButton radioButton[2];
-    QButtonGroup buttonGroup;
     QPushButton pushButton_query, pushButton_delete;
-    QHBoxLayout leftHBoxLayout[5], wholeHBoxLayout, rightHBoxLayout;
+    QHBoxLayout leftHBoxLayout[4], wholeHBoxLayout, rightHBoxLayout;
     QVBoxLayout leftVBoxLayout, rightVBoxLayout;
     QSqlQueryModel queryModel;
     QTableView tableView;
 
-    EmployeeModifyWidget employeeModifyWidget;
+    OwnerModifyWidget ownerModifyWidget;
 
 public slots:
     void slot_query();
@@ -49,4 +47,4 @@ public slots:
     void slot_delete();
 };
 
-#endif // EMPLOYEELOOKINGWIDGET_H
+#endif // OWNERLOOKINGWIDGET_H

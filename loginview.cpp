@@ -14,6 +14,9 @@ LoginView::LoginView(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(QString("登录"));
 
+    connect(&administratorView, SIGNAL(signal_quit()), this, SLOT(slot_quitFromMainWindow()));
+    connect(&employeeView, SIGNAL(signal_quit()), this, SLOT(slot_quitFromMainWindow()));
+
     vBoxLayout.addStretch();
 
     label_system.setText(QString("智慧小区管理系统"));
@@ -66,7 +69,7 @@ LoginView::LoginView(QWidget *parent) :
     vBoxLayout.addLayout(&hBoxLayout_button);
     vBoxLayout.addStretch();
 
-    setLayout(&vBoxLayout);\
+    setLayout(&vBoxLayout);
     setFixedSize(this->width(), this->height());
 }
 
@@ -118,7 +121,9 @@ void LoginView::slot_login()
                     administratorView.show();
                     break;
                 case DBHelper::Role::employee:
-                    qDebug() << "工作人员登录";
+                    employeeView.setUser(name_db, id);
+                    employeeView.setWindowTitle("工作人员界面-" + name_db);
+                    employeeView.show();
                     break;
                 case DBHelper::Role::owner:
                     qDebug() << "业主登录人员登录";
@@ -128,9 +133,11 @@ void LoginView::slot_login()
                 }
                 this->hide();
             }else{
+                qDebug() << "密码不正确";
                 QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
             }
         }else{
+            qDebug() << "查询为空";
             QMessageBox::information(this, QString("错误"), QString("用户名或密码错误，请重新检查"), QMessageBox::Ok);
         }
         dbHelper.close();
@@ -142,4 +149,9 @@ void LoginView::slot_login()
 void LoginView::slot_quit()
 {
     close();
+}
+
+void LoginView::slot_quitFromMainWindow()
+{
+    this->show();
 }

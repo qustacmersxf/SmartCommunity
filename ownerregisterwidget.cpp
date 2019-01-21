@@ -1,14 +1,15 @@
-#include "dbhelper.h"
-#include "employeeregisterwidget.h"
-#include "ui_employeeregisterwidget.h"
+#include "ownerregisterwidget.h"
+#include "ui_ownerregisterview.h"
 #include <QFont>
 #include <QDebug>
 #include <QMessageBox>
 
-EmployeeRegisterWidget::EmployeeRegisterWidget(QWidget *parent) :
+OwnerRegisterWidget::OwnerRegisterWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::EmployeeRegisterWidget)
+    ui(new Ui::OwnerRegisterView)
 {
+    ui->setupUi(this);
+
     ui->setupUi(this);
 
     QFont font;
@@ -39,6 +40,7 @@ EmployeeRegisterWidget::EmployeeRegisterWidget(QWidget *parent) :
     lineEdit_confirm.setEchoMode(QLineEdit::Password);
     hBoxLayout[3].addWidget(&label_confirm);
     hBoxLayout[3].addWidget(&lineEdit_confirm);
+    qDebug() << "confirm";
 
     label_homeAddress.setText(QString("家庭住址："));
     label_homeAddress.setFont(font);
@@ -46,11 +48,11 @@ EmployeeRegisterWidget::EmployeeRegisterWidget(QWidget *parent) :
     hBoxLayout[4].addWidget(&label_homeAddress);
     hBoxLayout[4].addWidget(&lineEdit_homeAddress);
 
-    pushButton_submit_employee.setText(QString("提交"));
-    pushButton_submit_employee.setFont(font);
-    pushButton_submit_employee.setFixedSize(120, 50);
-    connect(&pushButton_submit_employee, SIGNAL(clicked(bool)), this, SLOT(slot_submit_employee()));
-    hBoxLayout[5].addWidget(&pushButton_submit_employee);
+    pushButton_submit_owner.setText(QString("提交"));
+    pushButton_submit_owner.setFont(font);
+    pushButton_submit_owner.setFixedSize(120, 50);
+    connect(&pushButton_submit_owner, SIGNAL(clicked(bool)), this, SLOT(slot_submit_owner()));
+    hBoxLayout[5].addWidget(&pushButton_submit_owner);
     hBoxLayout[5].setAlignment(Qt::AlignRight);
 
     for (int i=0; i<6; i++){
@@ -60,17 +62,12 @@ EmployeeRegisterWidget::EmployeeRegisterWidget(QWidget *parent) :
     setLayout(&vBoxLayout);
 }
 
-EmployeeRegisterWidget::~EmployeeRegisterWidget()
+OwnerRegisterWidget::~OwnerRegisterWidget()
 {
     delete ui;
 }
 
-void EmployeeRegisterWidget::setRole(DBHelper::Role role)
-{
-    this->role = role;
-}
-
-void EmployeeRegisterWidget::slot_submit_employee()
+void OwnerRegisterWidget::slot_submit_owner()
 {
     QString name = lineEdit_name.text();
     QString phone = lineEdit_phone.text();
@@ -98,7 +95,7 @@ void EmployeeRegisterWidget::slot_submit_employee()
     QSqlQuery query = dbHelper.getQuery();
     QString sql = "insert into user(name, role, phone, password, homeAddress) values('"
             + name + "', "
-            + QString::number(role) + ", '"
+            + QString::number(2) + ", '"
             + phone + "', '"
             + password + "', '"
             + homeAddress + "')";
@@ -112,7 +109,6 @@ void EmployeeRegisterWidget::slot_submit_employee()
     }
     dbHelper.close();
     qDebug() << "提交成功";
-
     lineEdit_name.clear();
     lineEdit_phone.clear();
     lineEdit_password.clear();

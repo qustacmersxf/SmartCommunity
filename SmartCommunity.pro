@@ -31,7 +31,12 @@ SOURCES += main.cpp\
     administratorview.cpp \
     employeeregisterwidget.cpp \
     employeelookingwidget.cpp \
-    employeemodifywidget.cpp
+    employeemodifywidget.cpp \
+    employeeview.cpp \
+    ownerlookingwidget.cpp \
+    ownerregisterwidget.cpp \
+    ownermodifywidget.cpp \
+    attendencemanagement.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
@@ -39,10 +44,19 @@ HEADERS  += mainwindow.h \
     administratorview.h \
     employeeregisterwidget.h \
     employeelookingwidget.h \
-    employeemodifywidget.h
+    employeemodifywidget.h \
+    employeeview.h \
+    ownerlookingwidget.h \
+    ownerregisterwidget.h \
+    ownermodifywidget.h \
+    attendencemanagement.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \
     administratorview.ui \
     employeeregisterwidget.ui \
-    employeelookingwidget.ui
+    employeelookingwidget.ui \
+    employeeview.ui \
+    ownerregisterview.ui \
+    ownerlookingwidget.ui \
+    ownermodifywidget.ui
