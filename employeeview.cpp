@@ -13,6 +13,7 @@ EmployeeView::EmployeeView(QWidget *parent) :
     init_tabWidget();
 
     setFixedSize(this->width(), this->height());
+    qDebug() << "EmployeeView() end";
 }
 
 EmployeeView::~EmployeeView()

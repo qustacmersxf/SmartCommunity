@@ -60,6 +60,7 @@ OwnerRegisterWidget::OwnerRegisterWidget(QWidget *parent) :
     }
 
     setLayout(&vBoxLayout);
+    qDebug() << "OwnerRegisterWidget()";
 }
 
 OwnerRegisterWidget::~OwnerRegisterWidget()

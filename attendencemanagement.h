@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -19,17 +20,23 @@ public:
     explicit AttendenceManagement(QWidget *parent = 0);
 
 private:
-    QLabel label_condition, label_result;
-    QVBoxLayout leftVBoxLayout[2];
-    QVBoxLayout rightVBoxLayout;
-    QRadioButton radioButton_[4];
-    QPushButton pushButton_fakeStrip, pushButton_attendence;
+    QLabel label_condition, label_result, label_name;
+    QLineEdit lineEdit_name;
+    QVBoxLayout leftVBoxLayout, rightVBoxLayout;
+    QHBoxLayout leftHBoxLayout[3], wholeBoxLayout;
+    QRadioButton radioButton[2];
+    QButtonGroup buttonGroup;
+    QPushButton pushButton_fakeStrip;
     QSqlQueryModel queryModel;
     QTableView tableView;
+
 
 signals:
 
 public slots:
+    void slot_fakeStrip();
+    void slot_tableViewDoubleClicked(const QModelIndex inde);
+    void slot_tableViewClicked(const QModelIndex index);
 };
 
 #endif // ATTENDENCEMANAGEMENT_H

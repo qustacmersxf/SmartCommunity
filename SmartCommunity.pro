@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     ownerlookingwidget.cpp \
     ownerregisterwidget.cpp \
     ownermodifywidget.cpp \
-    attendencemanagement.cpp
+    attendencemanagement.cpp \
+    attendenceview.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     ownerlookingwidget.h \
     ownerregisterwidget.h \
     ownermodifywidget.h \
-    attendencemanagement.h
+    attendencemanagement.h \
+    attendenceview.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \

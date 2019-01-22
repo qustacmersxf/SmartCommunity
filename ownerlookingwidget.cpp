@@ -11,6 +11,7 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OwnerLookingWidget)
 {
+    qDebug() << "ownerLookingWidget start";
     ui->setupUi(this);
 
     QFont font;
@@ -21,24 +22,28 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     label_condition.setText(QString("筛选条件"));
     label_condition.setFont(font);
     leftHBoxLayout[0].addWidget(&label_condition);
+    qDebug() << "OwnerLookingWidget() 1";
 
     label_name.setText(QString("姓名"));
     label_name.setFont(font);
     lineEdit_name.setFont(font);
     leftHBoxLayout[1].addWidget(&label_name);
     leftHBoxLayout[1].addWidget(&lineEdit_name);
+    qDebug() << "OwnerLookingWidget() 2";
 
     label_phone.setText(QString("电话"));
     label_phone.setFont(font);
     lineEdit_phone.setFont(font);
     leftHBoxLayout[2].addWidget(&label_phone);
     leftHBoxLayout[2].addWidget(&lineEdit_phone);
+    qDebug() << "OwnerLookingWidget() 3";
 
     pushButton_query.setText(QString("查询"));
     pushButton_query.setFont(font);
     connect(&pushButton_query, SIGNAL(clicked(bool)), this, SLOT(slot_query()));
     leftHBoxLayout[3].addWidget(&pushButton_query);
     leftHBoxLayout[3].setAlignment(Qt::AlignRight);
+    qDebug() << "OwnerLookingWidget() 4";
 
     for (int i=0; i<4; i++){
         leftVBoxLayout.addLayout(&leftHBoxLayout[i]);
@@ -57,16 +62,19 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     connect(&tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slot_tableViewDoubleClicked(QModelIndex)));
     connect(&tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slot_tableViewClicked(QModelIndex)));
     rightVBoxLayout.addWidget(&tableView);
+    qDebug() << "OwnerLookingWidget() 5";
 
     pushButton_delete.setText(QString("删除"));
     connect(&pushButton_delete, SIGNAL(clicked(bool)), this, SLOT(slot_delete()));
     rightHBoxLayout.addStretch();
     rightHBoxLayout.addWidget(&pushButton_delete);
     rightVBoxLayout.addLayout(&rightHBoxLayout);
+    qDebug() << "OwnerLookingWidget() 6";
 
     wholeHBoxLayout.addLayout(&leftVBoxLayout, 1);
     wholeHBoxLayout.addLayout(&rightVBoxLayout, 4);
     setLayout(&wholeHBoxLayout);
+    qDebug() << "OwnerLookingWidget() end";
 }
 
 OwnerLookingWidget::~OwnerLookingWidget()

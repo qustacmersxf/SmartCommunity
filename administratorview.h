@@ -12,6 +12,8 @@
 #include "dbhelper.h"
 #include "employeeregisterwidget.h"
 #include "employeelookingwidget.h"
+#include "attendencemanagement.h"
+#include "attendenceview.h"
 
 namespace Ui {
 class AdministratorView;
@@ -42,8 +44,11 @@ private:
     QLabel label_welcome;
     QHBoxLayout hBoxLayout;
     QWidget *widget_tabWiget;
+
     EmployeeRegisterWidget employeeRegisterWidget;
     EmployeeLookingWidget employeeLookingWidget;
+    AttendenceManagement attendenceManagement;
+    AttendenceView attendenceView;
 
     QString userName;
     int userId;

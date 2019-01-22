@@ -19,6 +19,7 @@ AdministratorView::AdministratorView(QWidget *parent) :
 
     employeeRegisterWidget.setRole(DBHelper::Role::employee);
     setFixedSize(this->width(), this->height());
+    qDebug() << "AdministratorView() end";
 }
 
 AdministratorView::~AdministratorView()
@@ -130,6 +131,8 @@ void AdministratorView::init_tabWidget()
 
     tabWidget->addTab(&employeeRegisterWidget, QString("人员添加"));
     tabWidget->addTab(&employeeLookingWidget, QString("人员查看/修改"));
+    tabWidget->addTab(&attendenceManagement, QString("请假管理"));
+    tabWidget->addTab(&attendenceView, QString("出勤管理"));
 
     tabWidget->tabBar()->hide();
 
@@ -182,14 +185,17 @@ void AdministratorView::slot_personelModify()
 void AdministratorView::slot_fakeView()
 {
     qDebug() << "slot_fakeView()";
+    tabWidget->setCurrentIndex(3);
 }
 
 void AdministratorView::slot_EAA()
 {
     qDebug() << "slot_EAA()";
+    tabWidget->setCurrentIndex(3);
 }
 
 void AdministratorView::slot_attendenceView()
 {
     qDebug() << "slot_attendenceView()";
+    tabWidget->setCurrentIndex(4);
 }

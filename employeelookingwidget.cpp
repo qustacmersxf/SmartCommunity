@@ -14,7 +14,7 @@ EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
     ui->setupUi(this);
 
     QFont font;
-    font.setPointSize(10);
+    font.setPointSize(18);
 
     connect(&employeeModifyWidget, SIGNAL(signal_submitSuccess()), this, SLOT(slot_submitSuccess()));
 
@@ -63,6 +63,7 @@ EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
     label_result.setText(QString("查询结果（双击可修改）"));
     label_result.setFont(font);
     rightVBoxLayout.addWidget(&label_result);
+
     queryModel.setHeaderData(0, Qt::Horizontal, QString("ID"));
     queryModel.setHeaderData(1, Qt::Horizontal, QString("姓名"));
     queryModel.setHeaderData(2, Qt::Horizontal, QString("密码"));
@@ -74,6 +75,7 @@ EmployeeLookingWidget::EmployeeLookingWidget(QWidget *parent) :
     rightVBoxLayout.addWidget(&tableView);
 
     pushButton_delete.setText(QString("删除"));
+    pushButton_delete.setFont(font);
     connect(&pushButton_delete, SIGNAL(clicked(bool)), this, SLOT(slot_delete()));
     rightHBoxLayout.addStretch();
     rightHBoxLayout.addWidget(&pushButton_delete);
@@ -97,13 +99,13 @@ void EmployeeLookingWidget::slot_query()
     qDebug() << (int)role;
     switch (role) {
     case DBHelper::Role::employee:
-        sql = "select * from user_employee where role <> 0";
+        sql = "select id as 'ID', name as '姓名', role as '身份', phone as '电话', password as '密码', homeAddress as '家庭住址' from user_employee where role <> 0";
         break;
     case DBHelper::Role::owner:
-        sql = "select * from user_owner where role <> 0";
+        sql = "select id as 'ID', name as '姓名', role as '身份', phone as '电话', password as '密码', homeAddress as '家庭住址' from user_owner where role <> 0";
         break;
     default:
-        sql = "select * from user where role <> 0";
+        sql = "select id as 'ID', name as '姓名', role as '身份', phone as '电话', password as '密码', homeAddress as '家庭住址' from user where role <> 0";
         break;
     }
     QString name = lineEdit_name.text();
@@ -158,13 +160,25 @@ void EmployeeLookingWidget::slot_tableViewClicked(const QModelIndex index)
 
 void EmployeeLookingWidget::slot_submitSuccess()
 {
-    queryModel.setQuery("select * from user");
+    queryModel.setQuery("select id as 'ID', name as '姓名', role as '身份', phone as '电话', password as '密码', homeAddress as '家庭住址' from user where role <> 0");
 }
 
 void EmployeeLookingWidget::slot_delete()
 {
-    QSqlRecord recond = queryModel.record(tableView.currentIndex().row());
+    int row = tableView.currentIndex().row();
+    if (row < 0){
+        qDebug() << "row < 0";
+        QMessageBox::information(this, QString("错误"), QString("未选择记录"), QMessageBox::Ok);
+        return;
+    }
+    QSqlRecord recond = queryModel.record(row);
     int id = recond.value(0).toInt();
+    QString name = recond.value(1).toString();
+    QMessageBox::Button button = QMessageBox::question(this, QString("删除"), "是否删除" + name + "的信息?",
+                                                            QMessageBox::Ok | QMessageBox::No);
+    if (QMessageBox::No == button){
+        return;
+    }
     QString sql = "delete from user where id = " + QString::number(id);
     DBHelper dbHelper;
     if (!dbHelper.open()){

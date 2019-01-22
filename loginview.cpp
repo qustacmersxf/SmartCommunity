@@ -11,6 +11,7 @@ LoginView::LoginView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LoginView)
 {
+    qDebug() << "LoginView() start";
     ui->setupUi(this);
     setWindowTitle(QString("登录"));
 
@@ -71,6 +72,7 @@ LoginView::LoginView(QWidget *parent) :
 
     setLayout(&vBoxLayout);
     setFixedSize(this->width(), this->height());
+    qDebug() << "LoginView() end";
 }
 
 LoginView::~LoginView()
@@ -153,5 +155,17 @@ void LoginView::slot_quit()
 
 void LoginView::slot_quitFromMainWindow()
 {
+    lineEdit_count.clear();
+    lineEdit_password.clear();
+    /*QRadioButton *button = (QRadioButton*)buttonGroup.checkedButton();
+    int checkedId = buttonGroup.checkedId();
+    if (0 != button){
+        qDebug() << "button != 0";
+        buttonGroup.removeButton(button);
+        button->setChecked(false);
+        buttonGroup.addButton(button, checkedId);
+    }else{
+        qDebug() << "button == 0";
+    }*/
     this->show();
 }
