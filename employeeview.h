@@ -9,6 +9,7 @@
 #include "ownerregisterwidget.h"
 #include "employeeaskforleaveWidget.h"
 #include "employeeattendencewidget.h"
+#include "employeeparkingspacewidget.h"
 
 namespace Ui {
 class EmployeeView;
@@ -32,7 +33,7 @@ public:
 private:
     Ui::EmployeeView *ui;
     QMenu *menu_ownerManagement, *menu_personalAttendenceManagement;
-    QAction *action_ownerAdd, *action_ownerView, *action_ownerModify;
+    QAction *action_ownerAdd, *action_ownerView, *action_ownerModify, *action_parkingSpace;
     QAction *action_askForLeave, *action_terminateLeave, *action_attendence;
     QTabWidget *tabWidget;
     QLabel label_welcome;
@@ -43,6 +44,7 @@ private:
     OwnerLookingWidget ownerLookingWidget;
     EmployeeAskForLeaveWidget employeeAskForLeaveWidget;
     EmployeeAttendenceWidget employeeAttendenceWidget;
+    EmployeeParkingSpaceWidget employeeParkingSpaceWidget;
 
     QString userName;
     int userId;
@@ -57,6 +59,7 @@ public slots:
     void slot_askForLeave();
     void slot_terminateLeave();
     void slot_attendence();
+    void slot_parkingSpace();
 
     void slot_login();
 };

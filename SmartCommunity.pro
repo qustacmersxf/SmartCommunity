@@ -39,7 +39,10 @@ SOURCES += main.cpp\
     attendencemanagement.cpp \
     attendenceview.cpp \
     employeeaskforleaveWidget.cpp \
-    employeeattendencewidget.cpp
+    employeeattendencewidget.cpp \
+    employeeparkingspacewidget.cpp \
+    ownerview.cpp \
+    ownerparkingspacewidget.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
@@ -55,7 +58,10 @@ HEADERS  += mainwindow.h \
     attendencemanagement.h \
     attendenceview.h \
     employeeaskforleaveWidget.h \
-    employeeattendencewidget.h
+    employeeattendencewidget.h \
+    employeeparkingspacewidget.h \
+    ownerview.h \
+    ownerparkingspacewidget.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \
@@ -65,4 +71,5 @@ FORMS    += mainwindow.ui \
     employeeview.ui \
     ownerregisterview.ui \
     ownerlookingwidget.ui \
-    ownermodifywidget.ui
+    ownermodifywidget.ui \
+    ownerview.ui

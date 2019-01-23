@@ -67,6 +67,11 @@ void EmployeeView::init_addOwnerManagementMenu()
     //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
     connect(action_ownerModify, &QAction::triggered, this, &EmployeeView::slot_ownerModify);
     menu_ownerManagement->addAction(action_ownerModify);
+
+    action_parkingSpace = new QAction(QString("车位管理"));
+    action_parkingSpace->setShortcut(QString("Ctrl+P"));
+    connect(action_parkingSpace, &QAction::triggered, this, &EmployeeView::slot_parkingSpace);
+    menu_ownerManagement->addAction(action_parkingSpace);
 }
 
 void EmployeeView::init_addPersonalAttendenceManagementMenu()
@@ -105,6 +110,7 @@ void EmployeeView::init_tabWidget()
     tabWidget->addTab(&ownerLookingWidget, QString("业主查看/修改"));
     tabWidget->addTab(&employeeAskForLeaveWidget, QString("请假"));
     tabWidget->addTab(&employeeAttendenceWidget, QString("查看出勤"));
+    tabWidget->addTab(&employeeParkingSpaceWidget, QString("车位管理"));
     //tabWidget->tabBar()->hide();
 
     hBoxLayout.addWidget(tabWidget);
@@ -234,6 +240,12 @@ void EmployeeView::slot_attendence()
 {
     qDebug() << "slot_attendence()";
     tabWidget->setCurrentIndex(4);
+}
+
+void EmployeeView::slot_parkingSpace()
+{
+    qDebug() << "EmployeeView::slot_parkingSpace()";
+    tabWidget->setCurrentIndex(5);
 }
 
 void EmployeeView::slot_login()

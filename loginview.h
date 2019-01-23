@@ -13,6 +13,7 @@
 #include "dbhelper.h"
 #include "administratorview.h"
 #include "employeeview.h"
+#include "ownerview.h"
 
 namespace Ui {
 class LoginView;
@@ -42,6 +43,7 @@ private:
 
     AdministratorView administratorView;
     EmployeeView employeeView;
+    OwnerView ownerView;
 
 signals:
     signal_loginToEmployeeView();
