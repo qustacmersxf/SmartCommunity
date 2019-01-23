@@ -10,6 +10,7 @@
 #include "employeeaskforleaveWidget.h"
 #include "employeeattendencewidget.h"
 #include "employeeparkingspacewidget.h"
+#include "employeeparkingspaceapplyingwidget.h"
 
 namespace Ui {
 class EmployeeView;
@@ -27,14 +28,17 @@ public:
 
     void init_addOwnerManagementMenu();
     void init_addPersonalAttendenceManagementMenu();
+    void init_addParkingSpaceManagementMenu();
     void init_tabWidget();
     void setUser(QString userName, int userId);
 
 private:
     Ui::EmployeeView *ui;
     QMenu *menu_ownerManagement, *menu_personalAttendenceManagement;
-    QAction *action_ownerAdd, *action_ownerView, *action_ownerModify, *action_parkingSpace;
+    QMenu *menu_parkingSpaceManagement;
+    QAction *action_ownerAdd, *action_ownerView, *action_ownerModify;
     QAction *action_askForLeave, *action_terminateLeave, *action_attendence;
+    QAction *action_addParkingSpace, *action_dealWithParkingSpaceApply;
     QTabWidget *tabWidget;
     QLabel label_welcome;
     QHBoxLayout hBoxLayout;
@@ -45,6 +49,7 @@ private:
     EmployeeAskForLeaveWidget employeeAskForLeaveWidget;
     EmployeeAttendenceWidget employeeAttendenceWidget;
     EmployeeParkingSpaceWidget employeeParkingSpaceWidget;
+    EmployeeParkingSpaceApplyingWidget employeeParkingSpaceApplyingWidget;
 
     QString userName;
     int userId;
@@ -59,7 +64,8 @@ public slots:
     void slot_askForLeave();
     void slot_terminateLeave();
     void slot_attendence();
-    void slot_parkingSpace();
+    void slot_addParkingSpace();
+    void slot_dealWithParkingSpaceApply();
 
     void slot_login();
 };

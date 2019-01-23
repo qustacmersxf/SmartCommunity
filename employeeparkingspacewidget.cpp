@@ -45,9 +45,7 @@ EmployeeParkingSpaceWidget::EmployeeParkingSpaceWidget(QWidget *parent) : QWidge
     label_status.setFont(font);
     label_status.setText(QString("长度："));
     comboBox_status.setFont(font);
-    comboBox_status.addItem(QString("待出售"));
-    comboBox_status.addItem(QString("待出租"));
-    comboBox_status.addItem(QString("订单结束"));
+    comboBox_status.addItem(QString("可申请"));
     leftHBoxLayout[4].addWidget(&label_status);
     leftHBoxLayout[4].addWidget(&comboBox_status, 1);
     leftVBoxLayout.addLayout(&leftHBoxLayout[4]);

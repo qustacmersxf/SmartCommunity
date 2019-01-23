@@ -15,6 +15,7 @@ EmployeeView::EmployeeView(QWidget *parent) :
 
     init_addOwnerManagementMenu();
     init_addPersonalAttendenceManagementMenu();
+    init_addParkingSpaceManagementMenu();
     init_tabWidget();
 
     setFixedSize(this->width(), this->height());
@@ -39,6 +40,37 @@ EmployeeView::~EmployeeView()
         delete action_ownerModify;
         action_ownerModify = NULL;
     }
+
+    if (NULL != menu_personalAttendenceManagement){
+        delete menu_personalAttendenceManagement;
+        menu_personalAttendenceManagement = NULL;
+    }
+    if (NULL != action_askForLeave){
+        delete action_askForLeave;
+        action_askForLeave = NULL;
+    }
+    if (NULL != action_terminateLeave){
+        delete action_terminateLeave;
+        action_terminateLeave = NULL;
+    }
+    if (NULL != action_attendence){
+        delete action_attendence;
+        action_attendence = NULL;
+    }
+
+    if (NULL != menu_parkingSpaceManagement){
+        delete menu_parkingSpaceManagement;
+        menu_parkingSpaceManagement = NULL;
+    }
+    if (NULL != action_addParkingSpace){
+        delete action_addParkingSpace;
+        action_addParkingSpace = NULL;
+    }
+    if (NULL != action_dealWithParkingSpaceApply){
+        delete action_dealWithParkingSpaceApply;
+        action_dealWithParkingSpaceApply = NULL;
+    }
+
     delete ui;
 }
 
@@ -67,11 +99,6 @@ void EmployeeView::init_addOwnerManagementMenu()
     //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
     connect(action_ownerModify, &QAction::triggered, this, &EmployeeView::slot_ownerModify);
     menu_ownerManagement->addAction(action_ownerModify);
-
-    action_parkingSpace = new QAction(QString("车位管理"));
-    action_parkingSpace->setShortcut(QString("Ctrl+P"));
-    connect(action_parkingSpace, &QAction::triggered, this, &EmployeeView::slot_parkingSpace);
-    menu_ownerManagement->addAction(action_parkingSpace);
 }
 
 void EmployeeView::init_addPersonalAttendenceManagementMenu()
@@ -95,6 +122,19 @@ void EmployeeView::init_addPersonalAttendenceManagementMenu()
     menu_personalAttendenceManagement->addAction(action_attendence);
 }
 
+void EmployeeView::init_addParkingSpaceManagementMenu()
+{
+    menu_parkingSpaceManagement = menuBar()->addMenu(QString("车位管理"));
+
+    action_addParkingSpace = new QAction(QString("添加车位"));
+    connect(action_addParkingSpace, &QAction::triggered, this, &EmployeeView::slot_addParkingSpace);
+    menu_parkingSpaceManagement->addAction(action_addParkingSpace);
+
+    action_dealWithParkingSpaceApply = new QAction(QString("车位申请处理"));
+    connect(action_dealWithParkingSpaceApply, &QAction::triggered, this, &EmployeeView::slot_dealWithParkingSpaceApply);
+    menu_parkingSpaceManagement->addAction(action_dealWithParkingSpaceApply);
+}
+
 void EmployeeView::init_tabWidget()
 {
     label_welcome.setText(QString("欢迎进入智慧小区系统"));
@@ -104,13 +144,14 @@ void EmployeeView::init_tabWidget()
     label_welcome.setFont(font);
     label_welcome.setAlignment(Qt::AlignCenter);
     tabWidget = new QTabWidget();
-    tabWidget->addTab(&label_welcome, QString("欢迎"));
 
+    tabWidget->addTab(&label_welcome, QString("欢迎"));
     tabWidget->addTab(&ownerRegisterWidget, QString("业主添加"));
     tabWidget->addTab(&ownerLookingWidget, QString("业主查看/修改"));
     tabWidget->addTab(&employeeAskForLeaveWidget, QString("请假"));
     tabWidget->addTab(&employeeAttendenceWidget, QString("查看出勤"));
     tabWidget->addTab(&employeeParkingSpaceWidget, QString("车位管理"));
+    tabWidget->addTab(&employeeParkingSpaceApplyingWidget, QString("车位申请处理"));
     //tabWidget->tabBar()->hide();
 
     hBoxLayout.addWidget(tabWidget);
@@ -242,10 +283,16 @@ void EmployeeView::slot_attendence()
     tabWidget->setCurrentIndex(4);
 }
 
-void EmployeeView::slot_parkingSpace()
+void EmployeeView::slot_addParkingSpace()
 {
     qDebug() << "EmployeeView::slot_parkingSpace()";
     tabWidget->setCurrentIndex(5);
+}
+
+void EmployeeView::slot_dealWithParkingSpaceApply()
+{
+    qDebug() << "EmployeeView::slot_dealWithParkingSpaceApply()";
+    tabWidget->setCurrentIndex(6);
 }
 
 void EmployeeView::slot_login()
@@ -278,3 +325,5 @@ void EmployeeView::slot_login()
 
     db.close();
 }
+
+
