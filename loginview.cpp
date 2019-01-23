@@ -17,6 +17,7 @@ LoginView::LoginView(QWidget *parent) :
 
     connect(&administratorView, SIGNAL(signal_quit()), this, SLOT(slot_quitFromMainWindow()));
     connect(&employeeView, SIGNAL(signal_quit()), this, SLOT(slot_quitFromMainWindow()));
+    connect(this, SIGNAL(signal_loginToEmployeeView()), &employeeView, SLOT(slot_login()));
 
     vBoxLayout.addStretch();
 
@@ -121,11 +122,14 @@ void LoginView::slot_login()
                     administratorView.setUser(name_db, id);
                     administratorView.setWindowTitle("管理员界面-" + name_db);
                     administratorView.show();
+                    administratorView.checkAskForLeave();
                     break;
                 case DBHelper::Role::employee:
+                    qDebug() << "LoginView::slot_login() id = " << id;
                     employeeView.setUser(name_db, id);
                     employeeView.setWindowTitle("工作人员界面-" + name_db);
                     employeeView.show();
+                    emit signal_loginToEmployeeView();
                     break;
                 case DBHelper::Role::owner:
                     qDebug() << "业主登录人员登录";

@@ -15,7 +15,7 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     ui->setupUi(this);
 
     QFont font;
-    font.setPointSize(10);
+    font.setPointSize(18);
 
     connect(&ownerModifyWidget, SIGNAL(signal_submitSuccess()), this, SLOT(slot_submitSuccess()));
 
@@ -65,6 +65,7 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     qDebug() << "OwnerLookingWidget() 5";
 
     pushButton_delete.setText(QString("删除"));
+    pushButton_delete.setFont(font);
     connect(&pushButton_delete, SIGNAL(clicked(bool)), this, SLOT(slot_delete()));
     rightHBoxLayout.addStretch();
     rightHBoxLayout.addWidget(&pushButton_delete);
@@ -72,7 +73,7 @@ OwnerLookingWidget::OwnerLookingWidget(QWidget *parent) :
     qDebug() << "OwnerLookingWidget() 6";
 
     wholeHBoxLayout.addLayout(&leftVBoxLayout, 1);
-    wholeHBoxLayout.addLayout(&rightVBoxLayout, 4);
+    wholeHBoxLayout.addLayout(&rightVBoxLayout, 3);
     setLayout(&wholeHBoxLayout);
     qDebug() << "OwnerLookingWidget() end";
 }
@@ -83,7 +84,7 @@ OwnerLookingWidget::~OwnerLookingWidget()
 }
 void OwnerLookingWidget::slot_query()
 {
-    QString sql = "select * from user where role = 2";
+    QString sql = "select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user where role = 2";
     std::vector<QString> conditions;
     QString name = lineEdit_name.text();
     if (!name.isEmpty()){
@@ -111,9 +112,9 @@ void OwnerLookingWidget::slot_tableViewDoubleClicked(const QModelIndex index)
         QSqlRecord recond = queryModel.record(index.row());
         int id = recond.value(0).toInt();
         QString name = recond.value(1).toString();
-        QString phone = recond.value(3).toString();
-        QString password = recond.value(4).toString();
-        QString homeAddress = recond.value(5).toString();
+        QString phone = recond.value(2).toString();
+        QString password = recond.value(3).toString();
+        QString homeAddress = recond.value(4).toString();
         qDebug() << name + phone + password + homeAddress;
 
         ownerModifyWidget.setInfo(id, name, phone, password, homeAddress);
@@ -128,13 +129,25 @@ void OwnerLookingWidget::slot_tableViewClicked(const QModelIndex index)
 
 void OwnerLookingWidget::slot_submitSuccess()
 {
-    queryModel.setQuery("select * from user");
+    queryModel.setQuery("select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user");
 }
 
 void OwnerLookingWidget::slot_delete()
 {
+    int row = tableView.currentIndex().row();
+    if (row < 0){
+        qDebug() << "row < 0";
+        QMessageBox::information(this, QString("错误"), QString("未选择记录"), QMessageBox::Ok);
+        return;
+    }
     QSqlRecord recond = queryModel.record(tableView.currentIndex().row());
     int id = recond.value(0).toInt();
+    QString name = recond.value(1).toString();
+    QMessageBox::Button button = QMessageBox::question(this, QString("删除"), "是否删除" + name + "的信息?",
+                                                            QMessageBox::Ok | QMessageBox::No);
+    if (QMessageBox::No == button){
+        return;
+    }
     QString sql = "delete from user where id = " + QString::number(id);
     DBHelper dbHelper;
     if (!dbHelper.open()){
@@ -149,5 +162,5 @@ void OwnerLookingWidget::slot_delete()
     }
     QMessageBox::information(this, QString("成功"), QString("删除成功"), QMessageBox::Ok);
     qDebug() << "删除成功";
-    queryModel.setQuery("select * from user");
+    queryModel.setQuery("select id as 'ID', name as '身份', phone as '电话', password as '密码', homeAddress as '住址' from user");
 }

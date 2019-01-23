@@ -19,6 +19,7 @@ AdministratorView::AdministratorView(QWidget *parent) :
 
     employeeRegisterWidget.setRole(DBHelper::Role::employee);
     setFixedSize(this->width(), this->height());
+
     qDebug() << "AdministratorView() end";
 }
 
@@ -141,6 +142,28 @@ void AdministratorView::init_tabWidget()
     widget_tabWiget->setLayout(&hBoxLayout);
     widget_tabWiget->resize(this->width(), this->height());
     widget_tabWiget->setGeometry(0, 20, this->width(), this->height()-20);
+}
+
+void AdministratorView::checkAskForLeave()
+{
+    DBHelper db;
+    if (!db.open()){
+        qDebug() << "数据库打开失败 AdministratorView::checkAskForLeave()";
+        return;
+    }
+    QString sql = "select * from fakestrip where status = 0";
+    qDebug() << sql;
+    QSqlQuery query = db.getQuery();
+    if (!query.exec(sql)){
+        qDebug() << "执行失败 AdministratorView::checkAskForLeave()";
+        db.close();
+        return;
+    }
+    if (query.next()){
+        QMessageBox::information(this, QString("待处理"), QString("您有假条未处理，请前往“员工请假审批”界面处理。"),
+                                 QMessageBox::Ok);
+    }
+    db.close();
 }
 
 void AdministratorView::closeEvent(QCloseEvent *event)

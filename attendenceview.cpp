@@ -73,9 +73,11 @@ void AttendenceView::slot_query()
             return;
         }
         QSqlQuery query = dbHelper.getQuery();
+
         query.exec(sql);
         while (query.next()){
             int status = query.value(4).toInt();
+            //获取当前日期，若查询到的日期超过当前日期，则continue;
             switch (status){
             case 0:
                 nAttendent++;
@@ -91,7 +93,7 @@ void AttendenceView::slot_query()
             }
         }
         dbHelper.close();
-        QString info = "    员工 " + name + " 在本月共出勤" + QString::number(nAttendent)
+        QString info = "    员工 " + name + " 在本月截止到今天，共出勤" + QString::number(nAttendent)
                 + "天，请假" + QString::number(nFake) + "天，旷工" + QString::number(nAbsenteeism)
                 + "天。"; //添加对员工本月出勤情况的描述
         queryModel.setQuery(sql);

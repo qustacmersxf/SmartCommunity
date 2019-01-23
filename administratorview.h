@@ -33,6 +33,8 @@ public:
     void init_addtendenceManagementMenu();
     void init_tabWidget();
 
+    void checkAskForLeave();
+
     void setUser(QString userName, int userId);
 
 private:

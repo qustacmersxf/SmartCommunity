@@ -44,7 +44,7 @@ private:
     EmployeeView employeeView;
 
 signals:
-
+    signal_loginToEmployeeView();
 
 private slots:
     void slot_login();  //pushButton_login的相应槽函数，进行数据库查询与账号密码对比，并发射登录信号signal_loginToView()
