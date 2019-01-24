@@ -4,10 +4,14 @@
 #include <QSqlRecord>
 #include <QTextEdit>
 #include <QFont>
+#include "dbhelper.h"
 
 OwnerFaultApplyingWidget::OwnerFaultApplyingWidget(QWidget *parent) : QWidget(parent)
 {
     qDebug() << "OwnerFaultApplyingWidget::OwnerFaultApplyingWidget() 1";
+
+    connect(&remarkWisget, SIGNAL(signal_remarked()), this, SLOT(slot_remarked()));
+
     QFont font;
     font.setPointSize(18);
 
@@ -59,6 +63,11 @@ void OwnerFaultApplyingWidget::slot_remark()
 
     QSqlRecord recond = queryModel.record(tableView.currentIndex().row());
     int id = recond.value(0).toInt();
+    QString status = recond.value(5).toString();
+    if (0 == status.compare("已处理")){
+        QMessageBox::information(this, QString("评论"), QString("您已结束该维修服务"), QMessageBox::Ok);
+        return;
+    }
     remarkWisget.setFaultAccountId(id);
     remarkWisget.show();
 }
@@ -66,4 +75,23 @@ void OwnerFaultApplyingWidget::slot_remark()
 void OwnerFaultApplyingWidget::slot_tableViewClicked(const QModelIndex index)
 {
     tableView.selectRow(index.row());
+}
+
+void OwnerFaultApplyingWidget::slot_remarked()
+{
+    DBHelper db;
+    if (!db.open()){
+        qDebug() << "数据库打开失败";
+        return;
+    }
+    QSqlQuery query = db.getQuery();
+    QString sql = "insert into costaccount(ownerId, type, cost, status) values("
+            + QString::number(this->userId) + ", '维修费', 100, '未缴费')";
+    qDebug() <<sql;
+    if (!query.exec(sql)){
+        qDebug() << "提交失败";
+        QMessageBox::information(this, QString("失败"), QString("提交失败"), QMessageBox::Ok);
+    }
+    db.close();
+    slot_query();
 }

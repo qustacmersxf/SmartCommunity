@@ -42,10 +42,11 @@ void EmployeeParkingSpaceApplyingWidget::slot_accept()
 
     QSqlRecord recond = queryModel.record(row);
     int parkingSpaceId = recond.value(1).toInt();
-    int ownerId = recond.value(2).toInt();
+    int ownerId = recond.value(6).toInt();
+    int price = recond.value(5).toInt();
     DBHelper db;
     if (!db.open()){
-        qDebug() << "数据库打开失败 OwnerParkingSpaceWidget::slot_apply()";
+        qDebug() << "数据库打开失败 EmployeeParkingSpaceApplyingWidget::slot_accept()";
         return;
     }
     QSqlQuery query = db.getQuery();
@@ -53,19 +54,32 @@ void EmployeeParkingSpaceApplyingWidget::slot_accept()
             + " where id = " + QString::number(parkingSpaceId);
     qDebug() << sql;
     if (!query.exec(sql)){
-        qDebug() << "执行失败 OwnerParkingSpaceWidget::slot_apply()";
+        qDebug() << "执行失败 EmployeeParkingSpaceApplyingWidget::slot_accept() 1";
+        db.close();
+        return;
+    }
+
+    sql = "insert into costaccount(ownerId, type, cost, status) values("
+            + QString::number(ownerId) + ", '车位费', "
+            + QString::number(price) + ",'未缴费')";
+    qDebug() << sql;
+    if (!query.exec(sql)){
+        qDebug() << "执行失败 EmployeeParkingSpaceApplyingWidget::slot_accept() 2";
         db.close();
         return;
     }
     db.close();
+    slot_query();
     QMessageBox::information(this, QString("申请处理"), QString("处理成功。"), QMessageBox::Ok);
 }
 
 void EmployeeParkingSpaceApplyingWidget::slot_query()
 {
     qDebug() << "EmployeeParkingSpaceApplyingWidget::slot_query()";
-    QString sql = "select id as 'ID', parkingSpaceID as '车位ID', "
-                  "ownerId as '申请业主ID', name as '申请业主姓名' from parkingSpaceApplyAccount";
+    QString sql = "select parkingSpaceApplyAccount.id as 'ID', parkingSpaceID as '车位ID', width as '宽度', "
+                  "height as '长度', local as '地点', price as '价格',"
+                  "parkingSpaceApplyAccount.ownerId as '申请业主ID', name as '申请业主姓名' "
+                  "from parkingSpaceApplyAccount join parkingSpaceAccount on parkingSpaceID = parkingSpaceAccount.id";
     qDebug() << sql;
     queryModel.setQuery(sql);
 }

@@ -65,6 +65,8 @@ public slots:
     void slot_fakeView();
     void slot_EAA();
     void slot_attendenceView();
+
+    void slot_login();
 };
 
 #endif // ADMINISTRATORVIEW_H

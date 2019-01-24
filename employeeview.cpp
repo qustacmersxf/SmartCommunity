@@ -16,6 +16,7 @@ EmployeeView::EmployeeView(QWidget *parent) :
     init_addOwnerManagementMenu();
     init_addPersonalAttendenceManagementMenu();
     init_addParkingSpaceManagementMenu();
+    init_addFaultAndCostManagementMenu();
     init_tabWidget();
 
     setFixedSize(this->width(), this->height());
@@ -76,7 +77,7 @@ EmployeeView::~EmployeeView()
 
 void EmployeeView::init_addOwnerManagementMenu()
 {
-    menu_ownerManagement = menuBar()->addMenu(QString("物业管理"));
+    menu_ownerManagement = menuBar()->addMenu(QString("业主管理"));
     if (NULL == menu_ownerManagement){
         qDebug() << "menu_ownerManagement添加失败";
         return;
@@ -104,6 +105,11 @@ void EmployeeView::init_addOwnerManagementMenu()
     //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
     connect(action_ownerFault, &QAction::triggered, this, &EmployeeView::slot_ownerFault);
     menu_ownerManagement->addAction(action_ownerFault);
+
+    action_cost = new QAction(QString("业主缴费管理"), this);
+    //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
+    connect(action_cost, &QAction::triggered, this, &EmployeeView::slot_cost);
+    menu_ownerManagement->addAction(action_cost);
 }
 
 void EmployeeView::init_addPersonalAttendenceManagementMenu()
@@ -130,6 +136,10 @@ void EmployeeView::init_addPersonalAttendenceManagementMenu()
 void EmployeeView::init_addParkingSpaceManagementMenu()
 {
     menu_parkingSpaceManagement = menuBar()->addMenu(QString("车位管理"));
+    if (NULL == menu_parkingSpaceManagement){
+        qDebug() << "menu_personalAttendenceManagement添加失败";
+        return;
+    }
 
     action_addParkingSpace = new QAction(QString("添加车位"));
     connect(action_addParkingSpace, &QAction::triggered, this, &EmployeeView::slot_addParkingSpace);
@@ -138,6 +148,19 @@ void EmployeeView::init_addParkingSpaceManagementMenu()
     action_dealWithParkingSpaceApply = new QAction(QString("车位申请处理"));
     connect(action_dealWithParkingSpaceApply, &QAction::triggered, this, &EmployeeView::slot_dealWithParkingSpaceApply);
     menu_parkingSpaceManagement->addAction(action_dealWithParkingSpaceApply);
+}
+
+void EmployeeView::init_addFaultAndCostManagementMenu()
+{
+    menu_faultAndCostMangement = menuBar()->addMenu(QString("故障和缴费管理"));
+
+    action_ownerFault = new QAction(QString("故障报修管理"));
+    connect(action_ownerFault, &QAction::triggered, this, &EmployeeView::slot_ownerFault);
+    menu_faultAndCostMangement->addAction(action_ownerFault);
+
+    action_cost = new QAction(QString("业主缴费管理"));
+    connect(action_cost, &QAction::triggered, this, &EmployeeView::slot_cost);
+    menu_faultAndCostMangement->addAction(action_cost);
 }
 
 void EmployeeView::init_tabWidget()
@@ -158,7 +181,8 @@ void EmployeeView::init_tabWidget()
     tabWidget->addTab(&employeeParkingSpaceWidget, QString("车位管理"));
     tabWidget->addTab(&employeeParkingSpaceApplyingWidget, QString("车位申请处理"));
     tabWidget->addTab(&employeeFaultWidget, QString("物业故障管理"));
-    //tabWidget->tabBar()->hide();
+    tabWidget->addTab(&employeeCostWidget, QString("缴费管理"));
+    tabWidget->tabBar()->hide();
 
     hBoxLayout.addWidget(tabWidget);
     widget_tabWiget = new QWidget(this);
@@ -300,6 +324,11 @@ void EmployeeView::slot_ownerFault()
     tabWidget->setCurrentIndex(7);
 }
 
+void EmployeeView::slot_cost()
+{
+    tabWidget->setCurrentIndex(8);
+}
+
 void EmployeeView::slot_dealWithParkingSpaceApply()
 {
     qDebug() << "EmployeeView::slot_dealWithParkingSpaceApply()";
@@ -308,7 +337,7 @@ void EmployeeView::slot_dealWithParkingSpaceApply()
 
 void EmployeeView::slot_login()
 {
-    qDebug() << "slot_login()";
+    qDebug() << "EmployeeView::slot_login()";
     QDate currentDate = QDate::currentDate();
     DBHelper db;
     if (!db.open()){

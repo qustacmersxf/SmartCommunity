@@ -84,7 +84,20 @@ void init_database()
             }
             day++;
         }
-        qDebug() << "init_database() 4";
+        qDebug() << "init_database() 5";
+
+        //添加月初的物业费
+        for (int i=0; i<n; i++){
+            sql = "insert into costaccount(employeeId, type, cost, status) values("
+                  + QString::number(employeeIds[i]) + ", '物业费', 500, '未缴费')";
+            qDebug() << sql;
+            if (!query.exec(sql)){
+                qDebug() << "执行失败  main::init_database() 6";
+                exit(1);
+                db.close();
+                exit(1);
+            }
+        }
     }
 
     db.close();

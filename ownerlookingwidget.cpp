@@ -82,9 +82,10 @@ OwnerLookingWidget::~OwnerLookingWidget()
 {
     delete ui;
 }
+
 void OwnerLookingWidget::slot_query()
 {
-    QString sql = "select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user where role = 2";
+    QString sql = "select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user_owner";
     std::vector<QString> conditions;
     QString name = lineEdit_name.text();
     if (!name.isEmpty()){
@@ -95,12 +96,13 @@ void OwnerLookingWidget::slot_query()
         conditions.push_back("phone = '" + phone + "'");
     }
     if (conditions.size() > 0){
-        for (int i=1; i<conditions.size(); i++)
+        sql += " where " + conditions[0];
+        int n = conditions.size();
+        for (int i=1; i<n; i++)
             sql += " and " + conditions[i];
     }
     qDebug() << sql;
     queryModel.setQuery(sql);
-    tableView.resizeColumnsToContents();
     lineEdit_name.clear();
     lineEdit_phone.clear();
     qDebug() << "查询成功";
@@ -129,7 +131,7 @@ void OwnerLookingWidget::slot_tableViewClicked(const QModelIndex index)
 
 void OwnerLookingWidget::slot_submitSuccess()
 {
-    queryModel.setQuery("select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user");
+    queryModel.setQuery("select id as 'ID', name as '姓名', phone as '电话', password as '密码', homeAddress as '住址' from user_owner");
 }
 
 void OwnerLookingWidget::slot_delete()
@@ -164,3 +166,4 @@ void OwnerLookingWidget::slot_delete()
     qDebug() << "删除成功";
     queryModel.setQuery("select id as 'ID', name as '身份', phone as '电话', password as '密码', homeAddress as '住址' from user");
 }
+

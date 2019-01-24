@@ -49,7 +49,9 @@ void EmployeeAttendenceWidget::slot_signIn()
         db.close();
         return;
     }
+    slot_query();
     QMessageBox::information(this, QString("签到"), QString("签到成功。"), QMessageBox::Ok);
+    db.close();
 }
 
 void EmployeeAttendenceWidget::slot_query()

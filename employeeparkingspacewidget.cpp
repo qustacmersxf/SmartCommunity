@@ -113,7 +113,7 @@ void EmployeeParkingSpaceWidget::slot_query()
     qDebug() << "EmployeeParkingSpaceWidget::slot_submit()";
     QString sql = "select id as 'ID', price as '价格',"
                   "width as '宽度', height as '长度', status as '状态', "
-                  "local as '地点', ownerId as '业主(若已租出或售出)' from parkingSpaceAccount";
+                  "local as '地点', ownerId as '业主(若已售出)' from parkingSpaceAccount";
     qDebug() << sql;
     queryModel.setQuery(sql);
     tableView.resizeColumnToContents(0);

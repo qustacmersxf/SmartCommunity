@@ -30,6 +30,7 @@ private:
 
 
 signals:
+    signal_remarked();
 
 public slots:
     void slot_submit();

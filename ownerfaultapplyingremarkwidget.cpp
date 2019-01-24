@@ -52,6 +52,7 @@ void OwnerFaultApplyingRemarkWidget::slot_submit()
         return;
     }
     db.close();
-    QMessageBox::information(this, QString("车位申请"), QString("提交成功。"), QMessageBox::Ok);
+    QMessageBox::information(this, QString("故障申请评论"), QString("维修以结束，请到缴费界面缴纳维修费用。"), QMessageBox::Ok);
+    emit signal_remarked();
     close();
 }

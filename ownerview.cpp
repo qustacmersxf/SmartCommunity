@@ -2,8 +2,10 @@
 #include <QCloseEvent>
 #include <QDebug>
 #include <QFont>
+#include <QDate>
 #include "ownerview.h"
 #include "ui_ownerview.h"
+#include "dbhelper.h"
 
 OwnerView::OwnerView(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +67,10 @@ void OwnerView::init_addParkingSpaceManagementMenu()
     action_myParkingSpaceApplying = new QAction(QString("我的车位申请"));
     connect(action_myParkingSpaceApplying, &QAction::triggered, this, &OwnerView::slot_myParkingSpaceApplying);
     menu_parkingSpaceManagement->addAction(action_myParkingSpaceApplying);
+
+    action_cost = new QAction(QString("缴费管理"));
+    connect(action_cost, &QAction::triggered, this, &OwnerView::slot_cost);
+    menu_parkingSpaceManagement->addAction(action_cost);
 }
 
 void OwnerView::init_addFautlManagementMenu()
@@ -82,6 +88,8 @@ void OwnerView::init_addFautlManagementMenu()
     action_myFaultApplying = new QAction(QString("我的报修申请"));
     connect(action_myFaultApplying, &QAction::triggered, this, &OwnerView::slot_myFaultApplying);
     menu_faultManage->addAction(action_myFaultApplying);
+
+    menu_faultManage->addAction(action_cost);
 }
 
 void OwnerView::init_tabWidget()
@@ -99,6 +107,9 @@ void OwnerView::init_tabWidget()
     tabWidget.addTab(&myParkingSpaceApplyingWidget, QString("我的车位申请"));
     tabWidget.addTab(&ownerApplyFaultWidget, QString("故障报修"));
     tabWidget.addTab(&ownerFaultApplyingWidget, QString("我的故障申请"));
+    tabWidget.addTab(&ownerCoastWidget, QString("缴费管理"));
+    tabWidget.hide();
+
     vBoxLayout.addWidget(&tabWidget);
 
     widget_tabWiget = new QWidget(this);
@@ -131,6 +142,7 @@ void OwnerView::setUser(QString userName, int userId)
     myParkingSpaceApplyingWidget.setUser(userName, userId);
     ownerApplyFaultWidget.setUser(userName, userId);
     ownerFaultApplyingWidget.setUser(userName, userId);
+    ownerCoastWidget.setUser(userName, userId);
 }
 
 void OwnerView::slot_applyParkingSpace()
@@ -155,4 +167,33 @@ void OwnerView::slot_myFaultApplying()
 {
     qDebug() << "OwnerView::slot_myFaultApplying()";
     tabWidget.setCurrentIndex(4);
+}
+
+void OwnerView::slot_cost()
+{
+    tabWidget.setCurrentIndex(5);
+}
+
+void OwnerView::slot_login()
+{
+    qDebug() << "OwnerView::slot_login()";
+    DBHelper db;
+    if (!db.open()){
+        qDebug() << "数据库打开失败 OwnerView::slot_login()";
+        return;
+    }
+    QSqlQuery query = db.getQuery();
+    QString sql = "select * from costaccount where status = '未缴费' and ownerId = "
+            + QString::number(this->userId);
+    qDebug() << sql;
+    if (!query.exec(sql)){
+        qDebug() << "执行失败 OwnerView::slot_login()";
+        db.close();
+        return;
+    }
+    if (query.next()){
+        QMessageBox::information(this, QString("缴费"),
+            QString("您有未缴费项，请到缴费界面缴费。"), QMessageBox::Ok);
+    }
+    db.close();
 }

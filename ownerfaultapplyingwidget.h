@@ -36,6 +36,7 @@ public slots:
     void slot_remark();
 
     void slot_tableViewClicked(const QModelIndex index);
+    void slot_remarked();
 };
 
 #endif // OWNERFAULTAPPLYINGWIDGET_H

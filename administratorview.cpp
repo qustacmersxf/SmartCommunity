@@ -222,3 +222,27 @@ void AdministratorView::slot_attendenceView()
     qDebug() << "slot_attendenceView()";
     tabWidget->setCurrentIndex(4);
 }
+
+void AdministratorView::slot_login()
+{
+    qDebug() << "AdministratorView::slot_login()";
+    DBHelper db;
+    if (!db.open()){
+        qDebug() << "数据库打开失败 AdministratorView::slot_login()";
+        return;
+    }
+    QSqlQuery query = db.getQuery();
+    QString sql = "select * from fakestrip where status = 0";
+    qDebug() << sql;
+    if (!query.exec(sql)){
+        qDebug() << "执行失败 AdministratorView::slot_login()";
+        db.close();
+        return;
+    }
+    if (query.next()){
+        QMessageBox::information(this, QString("请假审批"), QString("您有未处理的假条，请及时处理。"),
+                                 QMessageBox::Ok);
+    }
+
+    db.close();
+}

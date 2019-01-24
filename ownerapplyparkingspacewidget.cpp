@@ -1,8 +1,8 @@
+#include "ownerapplyparkingspacewidget.h"
 #include <QDebug>
 #include <QFont>
 #include <QMessageBox>
 #include <QSqlRecord>
-#include "ownerapplyparkingspacewidget.h"
 #include "dbhelper.h"
 
 OwnerApplyParkingSpaceWidget::OwnerApplyParkingSpaceWidget(QWidget *parent) : QWidget(parent)
@@ -17,7 +17,7 @@ OwnerApplyParkingSpaceWidget::OwnerApplyParkingSpaceWidget(QWidget *parent) : QW
     qDebug() << "OwnerApplyParkingSpaceWidget::OwnerApplyParkingSpaceWidget() 2";
 
     pushButton_query.setFont(font);
-    pushButton_query.setText(QString("查询车位"));
+    pushButton_query.setText(QString("查询可申请车位"));
     connect(&pushButton_query, SIGNAL(clicked(bool)), this, SLOT(slot_query()));
     pushButton_apply.setFont(font);
     pushButton_apply.setText(QString("申请"));
@@ -70,6 +70,7 @@ void OwnerApplyParkingSpaceWidget::slot_apply()
         return;
     }
     db.close();
+    slot_query();
     QMessageBox::information(this, QString("车位申请"), QString("提交成功。"), QMessageBox::Ok);
 }
 

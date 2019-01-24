@@ -91,10 +91,12 @@ void OwnerModifyWidget::slot_submit()
     QSqlQuery query = dbHelper.getQuery();
     if (!query.exec(sql)){
         qDebug() << "提交失败";
+        dbHelper.close();
         QMessageBox::information(this, QString("失败"), QString("提交失败"), QMessageBox::Ok);
         return;
     }
     qDebug() << "提交成功";
+    dbHelper.close();
     QMessageBox::information(this, QString("成功"), QString("提交成功"), QMessageBox::Ok);
     emit signal_submitSuccess();
     close();

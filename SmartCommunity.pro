@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     ownerapplyfaultwidget.cpp \
     ownerfaultapplyingwidget.cpp \
     ownerfaultapplyingremarkwidget.cpp \
-    employeefaultwidget.cpp
+    employeefaultwidget.cpp \
+    employeecostwidget.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
@@ -75,7 +76,8 @@ HEADERS  += mainwindow.h \
     ownerapplyfaultwidget.h \
     ownerfaultapplyingwidget.h \
     ownerfaultapplyingremarkwidget.h \
-    employeefaultwidget.h
+    employeefaultwidget.h \
+    employeecostwidget.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \

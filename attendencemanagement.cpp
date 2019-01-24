@@ -49,13 +49,6 @@ AttendenceManagement::AttendenceManagement(QWidget *parent) : QWidget(parent)
     label_result.setText(QString("查询结果(状态:0/1/2分别表示待处理、已批准、已驳回)"));
     label_result.setFont(font);
 
-    /*this->queryModel.setHeaderData(0, Qt::Horizontal, tr("ID"));
-    this->queryModel.setHeaderData(1, Qt::Horizontal, QString("员工ID"));
-    this->queryModel.setHeaderData(2, Qt::Horizontal, QString("员工姓名"));
-    this->queryModel.setHeaderData(3, Qt::Horizontal, QString("请假原因"));
-    this->queryModel.setHeaderData(4, Qt::Horizontal, QString("起始日期"));
-    this->queryModel.setHeaderData(5, Qt::Horizontal, QString("截止日期"));
-    this->queryModel.setHeaderData(6, Qt::Horizontal, QString("状态"));*/
     queryModel.setQuery("select reason, startDate, endDate, status, id as 'ID', employeeId as '员工ID',name as '姓名' "
                         " from fakestrip");
     tableView.setModel(&(this->queryModel));
@@ -109,6 +102,7 @@ void AttendenceManagement::slot_fakeStrip()
     }else{
         qDebug() << "button == 0";
     }
+    lineEdit_name.clear();
 }
 
 void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
@@ -124,6 +118,8 @@ void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
         QDate endDate = recond.value(5).toDate();
         int status = recond.value(6).toInt();
         qDebug() << "1";
+        qDebug() << "startDate:" << startDate.toString("yyyy-MM-dd");
+        qDebug() << "endDate:" << endDate.toString("yyyy-MM-dd");
 
         QString info = "    员工" + name +"，出于 " + reason + " 的原因，于" + startDate.toString("yyyy-MM-dd") + "至"
                 + endDate.toString("yyyy-MM-dd")
@@ -145,14 +141,6 @@ void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
         if (0 == status){
             button = QMessageBox::question(this, QString("假条审批"),
                     info, QMessageBox::Yes | QMessageBox::No);
-            QString sql = "";
-            if (button == QMessageBox::No) {
-                sql = "update fakestrip set status = 2 where id = " + QString::number(id);
-                return;
-            }
-            else if (button == QMessageBox::Yes) {
-                sql = "update fakestrip set status = 1 where id = " + QString::number(id);
-            }
             DBHelper dbHelper;
             if (!dbHelper.open()){
                 qDebug() << "数据库打开失败 AttendenceManagement::slot_tableViewDoubleClicked()";
@@ -160,6 +148,18 @@ void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
             }
             qDebug() << "数据库打开成功";
             QSqlQuery query = dbHelper.getQuery();
+            QString sql = "";
+            if (button == QMessageBox::No) {
+                sql = "update fakestrip set status = 2 where id = " + QString::number(id);
+                if (!query.exec(sql)){
+                    qDebug() << "执行失败 AttendenceManagement::slot_tableViewDoubleClicked() 0";
+                }
+                dbHelper.close();
+                return;
+            }
+            else if (button == QMessageBox::Yes) {
+                sql = "update fakestrip set status = 1 where id = " + QString::number(id);
+            }
             if (!query.exec(sql)){
                 qDebug() << "执行失败 AttendenceManagement::slot_tableViewDoubleClicked() 1";
                 dbHelper.close();
@@ -177,11 +177,13 @@ void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
             std::vector<int> ids;
             while (query.next()){
                 QDate date = query.value(3).toDate();
+                qDebug() << date.toString("yyyy-MM-dd");
                 if (date >= startDate && date <= endDate){
                     ids.push_back(query.value(0).toInt());
                 }
             }
             int n = ids.size();
+            qDebug() << "n = " << n;
             for (int i=0; i<n; i++){
                 QString str = "update attendencerecond set status = 1 where id = " + QString::number(ids[i]);
                 qDebug() << str;
@@ -191,11 +193,13 @@ void AttendenceManagement::slot_tableViewDoubleClicked(const QModelIndex index)
                     return;
                 }
             }
+            slot_fakeStrip();
             dbHelper.close();
         }else{
             QMessageBox::question(this, QString("假条审批"), info, QMessageBox::Yes);
         }
     }
+
 }
 
 void AttendenceManagement::slot_tableViewClicked(const QModelIndex index)

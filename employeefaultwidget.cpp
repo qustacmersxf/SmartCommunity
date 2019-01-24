@@ -56,6 +56,7 @@ void EmployeeFaultWidget::slot_dealWith()
         return;
     }
     db.close();
+    slot_dealWith();
     QMessageBox::information(this, QString("申请处理"), QString("已通知维修人员前去处理。"), QMessageBox::Ok);
 }
 

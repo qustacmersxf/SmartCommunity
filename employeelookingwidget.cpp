@@ -95,9 +95,9 @@ void EmployeeLookingWidget::slot_query()
 {
     QString sql = "";
     std::vector<QString> conditions;
-    DBHelper::Role role = (DBHelper::Role)(buttonGroup.checkedId() - 1);
+    DBHelper::Role role = (DBHelper::Role)(buttonGroup.checkedId() + 1);
     qDebug() << (int)role;
-    switch (role) {
+    switch (role){
     case DBHelper::Role::employee:
         sql = "select id as 'ID', name as '姓名', role as '身份', phone as '电话', password as '密码', homeAddress as '家庭住址' from user_employee where role <> 0";
         break;
@@ -117,8 +117,8 @@ void EmployeeLookingWidget::slot_query()
         conditions.push_back("phone = '" + phone + "'");
     }
     if (conditions.size() > 0){
-        for (int i=1; i<conditions.size(); i++)
-            sql += "and " + conditions[i];
+        for (int i=0; i<conditions.size(); i++)
+            sql += " and " + conditions[i];
     }
     qDebug() << sql;
     queryModel.setQuery(sql);
@@ -128,7 +128,7 @@ void EmployeeLookingWidget::slot_query()
         qDebug() << "button != 0";
         buttonGroup.removeButton(button);
         button->setChecked(false);
-        buttonGroup.addButton(button, (int)role);
+        buttonGroup.addButton(button, ((int)role)-1);
     }else{
         qDebug() << "button == 0";
     }
