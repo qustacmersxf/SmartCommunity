@@ -13,18 +13,19 @@ OwnerView::OwnerView(QWidget *parent) :
     ui->setupUi(this);
 
     init_addParkingSpaceManagementMenu();
+    init_addFautlManagementMenu();
     init_tabWidget();
 }
 
 OwnerView::~OwnerView()
 {
-    if (NULL != menu_parkingSpaceManagement){
-        delete menu_parkingSpaceManagement;
-        menu_parkingSpaceManagement = NULL;
-    }
     if (NULL != widget_tabWiget){
         delete widget_tabWiget;
         widget_tabWiget = NULL;
+    }
+    if (NULL != menu_parkingSpaceManagement){
+        delete menu_parkingSpaceManagement;
+        menu_parkingSpaceManagement = NULL;
     }
     if (NULL != action_applyParkingSpace){
         delete action_applyParkingSpace;
@@ -33,6 +34,18 @@ OwnerView::~OwnerView()
     if (NULL != action_myParkingSpaceApplying){
         delete action_myParkingSpaceApplying;
         action_myParkingSpaceApplying = NULL;
+    }
+    if (NULL != menu_faultManage){
+        delete menu_faultManage;
+        menu_faultManage = NULL;
+    }
+    if (NULL != action_applyFault){
+        delete action_applyFault;
+        action_applyFault = NULL;
+    }
+    if (NULL != action_myFaultApplying){
+        delete action_myFaultApplying;
+        action_myFaultApplying = NULL;
     }
     delete ui;
 }
@@ -54,6 +67,23 @@ void OwnerView::init_addParkingSpaceManagementMenu()
     menu_parkingSpaceManagement->addAction(action_myParkingSpaceApplying);
 }
 
+void OwnerView::init_addFautlManagementMenu()
+{
+    menu_faultManage = menuBar()->addMenu(QString("故障管理"));
+    if (NULL == menu_parkingSpaceManagement){
+        qDebug() << "menu_ownerManagement添加失败";
+        return;
+    }
+
+    action_applyFault = new QAction(QString("故障报修"));
+    connect(action_applyFault, &QAction::triggered, this, &OwnerView::slot_applyFault);
+    menu_faultManage->addAction(action_applyFault);
+
+    action_myFaultApplying = new QAction(QString("我的报修申请"));
+    connect(action_myFaultApplying, &QAction::triggered, this, &OwnerView::slot_myFaultApplying);
+    menu_faultManage->addAction(action_myFaultApplying);
+}
+
 void OwnerView::init_tabWidget()
 {
     QFont font;
@@ -67,6 +97,8 @@ void OwnerView::init_tabWidget()
 
     tabWidget.addTab(&ownerApplyParkingSpaceWidget, QString("申请车位"));
     tabWidget.addTab(&myParkingSpaceApplyingWidget, QString("我的车位申请"));
+    tabWidget.addTab(&ownerApplyFaultWidget, QString("故障报修"));
+    tabWidget.addTab(&ownerFaultApplyingWidget, QString("我的故障申请"));
     vBoxLayout.addWidget(&tabWidget);
 
     widget_tabWiget = new QWidget(this);
@@ -97,6 +129,8 @@ void OwnerView::setUser(QString userName, int userId)
     this->userId = userId;
     ownerApplyParkingSpaceWidget.setUser(userName, userId);
     myParkingSpaceApplyingWidget.setUser(userName, userId);
+    ownerApplyFaultWidget.setUser(userName, userId);
+    ownerFaultApplyingWidget.setUser(userName, userId);
 }
 
 void OwnerView::slot_applyParkingSpace()
@@ -109,4 +143,16 @@ void OwnerView::slot_myParkingSpaceApplying()
 {
     qDebug() << "OwnerView::slot_myParkingSpaceApplying()";
     tabWidget.setCurrentIndex(2);
+}
+
+void OwnerView::slot_applyFault()
+{
+    qDebug() << "OwnerView::slot_applyFault()";
+    tabWidget.setCurrentIndex(3);
+}
+
+void OwnerView::slot_myFaultApplying()
+{
+    qDebug() << "OwnerView::slot_myFaultApplying()";
+    tabWidget.setCurrentIndex(4);
 }

@@ -45,7 +45,11 @@ SOURCES += main.cpp\
     ownercostwidget.cpp \
     employeeparkingspaceapplyingwidget.cpp \
     ownerapplyparkingspacewidget.cpp \
-    ownerparkingspaceapplyingwidget.cpp
+    ownerparkingspaceapplyingwidget.cpp \
+    ownerapplyfaultwidget.cpp \
+    ownerfaultapplyingwidget.cpp \
+    ownerfaultapplyingremarkwidget.cpp \
+    employeefaultwidget.cpp
 
 HEADERS  += mainwindow.h \
     loginview.h \
@@ -67,7 +71,11 @@ HEADERS  += mainwindow.h \
     ownercostwidget.h \
     employeeparkingspaceapplyingwidget.h \
     ownerapplyparkingspacewidget.h \
-    ownerparkingspaceapplyingwidget.h
+    ownerparkingspaceapplyingwidget.h \
+    ownerapplyfaultwidget.h \
+    ownerfaultapplyingwidget.h \
+    ownerfaultapplyingremarkwidget.h \
+    employeefaultwidget.h
 
 FORMS    += mainwindow.ui \
     loginview.ui \

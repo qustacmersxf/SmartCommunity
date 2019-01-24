@@ -30,9 +30,10 @@ void OwnerParkingSpaceApplyingWidget::setUser(QString userName, int userId)
 
 void OwnerParkingSpaceApplyingWidget::slot_query()
 {
-    QString sql = "select id as 'ID', local as '位置', "
+    QString sql = "select parkingSpaceAccount.id as 'ID', local as '位置', "
                   "price as '价格', width as '宽度', "
-                  "height as '长度', status as '状态', ownerId as '业主ID' from parkingSpaceAccount "
+                  "height as '长度', status as '状态', ownerId as '业主ID', name as '业主姓名' "
+                  "from parkingSpaceAccount join user on parkingSpaceAccount.ownerId = user.id "
                   "where ownerId = " + QString::number(this->userId);
     qDebug() << sql;
     queryModel.setQuery(sql);

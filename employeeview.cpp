@@ -99,6 +99,11 @@ void EmployeeView::init_addOwnerManagementMenu()
     //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
     connect(action_ownerModify, &QAction::triggered, this, &EmployeeView::slot_ownerModify);
     menu_ownerManagement->addAction(action_ownerModify);
+
+    action_ownerFault = new QAction(QString("故障报修管理"), this);
+    //action_ownerAdd->setIcon(QIcon(QString(""))); //添加图标
+    connect(action_ownerFault, &QAction::triggered, this, &EmployeeView::slot_ownerFault);
+    menu_ownerManagement->addAction(action_ownerFault);
 }
 
 void EmployeeView::init_addPersonalAttendenceManagementMenu()
@@ -152,6 +157,7 @@ void EmployeeView::init_tabWidget()
     tabWidget->addTab(&employeeAttendenceWidget, QString("查看出勤"));
     tabWidget->addTab(&employeeParkingSpaceWidget, QString("车位管理"));
     tabWidget->addTab(&employeeParkingSpaceApplyingWidget, QString("车位申请处理"));
+    tabWidget->addTab(&employeeFaultWidget, QString("物业故障管理"));
     //tabWidget->tabBar()->hide();
 
     hBoxLayout.addWidget(tabWidget);
@@ -287,6 +293,11 @@ void EmployeeView::slot_addParkingSpace()
 {
     qDebug() << "EmployeeView::slot_parkingSpace()";
     tabWidget->setCurrentIndex(5);
+}
+
+void EmployeeView::slot_ownerFault()
+{
+    tabWidget->setCurrentIndex(7);
 }
 
 void EmployeeView::slot_dealWithParkingSpaceApply()

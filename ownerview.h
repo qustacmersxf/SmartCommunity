@@ -10,6 +10,8 @@
 #include <QVBoxLayout>
 #include "ownerapplyparkingspacewidget.h"
 #include "ownerparkingspaceapplyingwidget.h"
+#include "ownerapplyfaultwidget.h"
+#include "ownerfaultapplyingwidget.h"
 
 namespace Ui {
 class OwnerView;
@@ -24,6 +26,7 @@ public:
     ~OwnerView();
 
     void init_addParkingSpaceManagementMenu();
+    void init_addFautlManagementMenu();
     void init_tabWidget();
 
     void closeEvent(QCloseEvent *event);
@@ -37,6 +40,8 @@ private:
     Ui::OwnerView *ui;
     QMenu *menu_parkingSpaceManagement;
     QAction *action_applyParkingSpace, *action_myParkingSpaceApplying;
+    QMenu *menu_faultManage;
+    QAction *action_applyFault, *action_myFaultApplying;
     QLabel label_welcome;
     QTabWidget tabWidget;
     QVBoxLayout vBoxLayout;
@@ -44,6 +49,8 @@ private:
 
     OwnerApplyParkingSpaceWidget ownerApplyParkingSpaceWidget;
     OwnerParkingSpaceApplyingWidget myParkingSpaceApplyingWidget;
+    OwnerApplyFaultWidget ownerApplyFaultWidget;
+    OwnerFaultApplyingWidget ownerFaultApplyingWidget;
 
     QString userName;
     int userId;
@@ -51,6 +58,8 @@ private:
 public slots:
     void slot_applyParkingSpace();
     void slot_myParkingSpaceApplying();
+    void slot_applyFault();
+    void slot_myFaultApplying();
 };
 
 #endif // OWNERVIEW_H
